@@ -9,7 +9,7 @@ try:
     print('Connected to', HOSTNAME, PORT)
 except Exception as error:
     print('Error while connecting to server\n', error)
-
+    
 while True:
     message = input()
     try:
