@@ -1,5 +1,6 @@
 import socket
 from _thread import *
+from constants import HOSTNAME, PORT
 
 
 def client_thread(connection):
@@ -15,9 +16,6 @@ def client_thread(connection):
 	data_to_client = message_to_client.encode()
 	connection.send(data_to_client)
 
-
-HOSTNAME = 'localhost'
-PORT = 3030
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connections = {}

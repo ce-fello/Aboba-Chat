@@ -1,11 +1,11 @@
 import socket
-from socket_server import HOSTNAME, PORT
+from constants import HOSTNAME, PORT
 
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
 
 try:
-    client.connect((HOSTNAME, PORT))          
+    client.connect((HOSTNAME, PORT))   
     print('Connected to', HOSTNAME, PORT)
 except Exception as error:
     print('Error while connecting to server\n', error)
