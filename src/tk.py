@@ -1,82 +1,213 @@
 from tkinter import *
-root = Tk()#
-root.title("Aboba chat)") #заголовок
-root.geometry("500x500")# размер
-root.resizable(width=False, height=False)#неизменяемость размера
-root.iconbitmap("logo.ico")# лого
-root.config(bg = 'purple') #фон 1 способ
-#root['bg'] = 'black'#фон 2 способ
+from tkinter import messagebox
 
 
-def click():
-    print('Hello')
+class AbobaChatApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Aboba chat)")
+        self.root.geometry("500x500")
+        self.root.resizable(width=False, height=False)
+        #self.root.iconbitmap("../resources/logo.ico")
+        self.root.config(bg='purple')
+        self.setup_ui()
+        self.root.protocol('WM_DELETE_WINDOW', self.on_closing)
+    
+    def on_closing(self):
+        if messagebox.askokcancel('Выход из приложения', 'Хотите выйти из приложения?'):
+            self.root.destroy()
+
+    def setup_ui(self):
+
+        self.btnVhod = Button(self.root,
+                              text='Sign in',
+                              command=self.clickVhod,
+                              font=('Comic Sans MS', 20, 'bold'),
+                              fg='white',
+                              bg='pink',
+                              activebackground='pink',
+                              activeforeground='blue')
+        self.btnVhod.place(x=150, y=270, width=200, height=40)
+
+        self.lbl = Label(self.root,
+                         text='Welcome to the AbobaChat!', 
+                         font=('Comic Sans MS', 20, 'bold'),
+                         bg='purple',
+                         fg='white')
+        self.lbl.place(x=50, y=100, width=400, height=50)
+
+        self.btnReg = Button(self.root,
+                             text='Sign up',
+                             command=self.clickReg,
+                             font=('Comic Sans MS', 20, 'bold'),
+                             fg='white',
+                             bg='pink',
+                             activebackground='pink',
+                             activeforeground='blue')
+        self.btnReg.place(x=150, y=325, width=200, height=40)
+
+        self.autorization = Label(self.root,
+                                text='Authorization', 
+                                font=('Comic Sans MS', 20, 'bold'),
+                                bg='purple',
+                                fg='white')
+
+        self.vveditelogin = Entry(self.root)
+        self.vvediteparol = Entry(self.root)
+
+        self.vveditedr = Label(self.root,
+                            text='Please, fill in the gaps correctly',
+                            font=('Comic Sans MS', 10, 'bold'),
+                            bg='purple',
+                            fg='white')
+
+    def clickVhod(self):
+        self.btnReg.place_forget()
+        self.btnVhod.place_forget()
+
+        self.vveditelogin.place(x=150, y=240, width=200, height=40)
+        self.vveditelogin.insert(0, 'Введите логин')
+        self.vveditelogin.bind("<Button-1>", self.clear_search_log)
+
+        self.vvediteparol.place(x=150, y=295, width=200, height=40)
+        self.vvediteparol.insert(0, 'Введите пароль')
+        self.vvediteparol.bind("<Button-1>", self.clear_search_log1)
+
+        self.autorization.place(x=50, y=170, width=400, height=50)
+
+        self.btnVoyti = Button(self.root,
+                               text='Sign in',
+                               command=self.Voyti,
+                               font=('Comic Sans MS', 20, 'bold'),
+                               fg='white',
+                               bg='pink',
+                               activebackground='pink',
+                               activeforeground='blue')
+        self.btnVoyti.place(x=150, y=350, width=200, height=40)
+
+    def clear_search_log(self, event):
+        if self.vveditelogin.get() == 'Введите логин':
+            self.vveditelogin.delete(0, END)
+
+    def clear_search_log1(self, event):
+        if self.vvediteparol.get() == 'Введите пароль':
+            self.vvediteparol.delete(0, END)
+
+    def Voyti(self):
+        login = self.vveditelogin.get()
+        parol = self.vvediteparol.get()
+        if login != 'Введите логин' and parol != 'Введите пароль' and login != '' and parol !='': #проверка на базу данных
+            Profil(self.root)
+            self.root.destroy()
+        else:
+            self.vveditedr.place(x=100, y=375, width=300, height=50)
+
+    def clickReg(self):
+        root.withdraw()
+        Registration(self.root)
+        
 
 
-btn = Button(root, 
-             text = 'Вход', #название кнопки
-             command = click,#команда по клику
-             font = ('Comic Sans MS', 20, 'bold'),#шрифт кнопки, кегль, курсив, жирный
-             fg = 'white',#цвет шрифта не в активной фазе
-             bg = 'pink',#цвет кнопки
-             #width = 10,#параметры кнопки
-             #height= 10,#параметры кнопки
-             activebackground = 'pink',#цвет кнопки во время нажатия
-             activeforeground = 'blue',#цвет шрифта в активной фазе
+class Registration:
+    def __init__(self, parent):
+        self.parent = parent
+        self.top=Toplevel(parent)
+        self.top.title("Aboba chat")
+        self.top.geometry("500x500")
+        self.top.resizable(width=False, height=False)
+        #self.top.iconbitmap("../resources/logo.ico")
+        self.top.config(bg='purple')
+        self.setup_ui()
+        
 
-            )#параметры кнопки
+    def setup_ui(self):
+        self.lbl = Label(self.top,
+                         text='Registration',
+                         font=('Comic Sans MS', 26, 'bold'),
+                         bg='purple',
+                         fg='white')
+        self.lbl.place(x=50, y=100, width=400, height=50)
 
-btn1 = Button(root, 
-             text = 'Регистрация', #название кнопки
-             command = click,#команда по клику
-             font = ('Comic Sans MS', 12, 'bold'),#шрифт кнопки, кегль, курсив, жирный
-             fg = 'white',#цвет шрифта не в активной фазе
-             bg = 'pink',#цвет кнопки
-             #width = 11,#параметры кнопки
-             #height= 1,#параметры кнопки
-             activebackground = 'pink',#цвет кнопки во время нажатия
-             activeforeground = 'blue',#цвет шрифта в активной фазе
+        self.lbl1 = Label(self.top,
+                          text='Please, fill in the gaps correctly',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
 
-             )#параметры кнопки
+        self.pridumaytelogin = Entry(self.top)
+        self.pridumayteparol = Entry(self.top)
+        self.povtoriteparol = Entry(self.top)
 
+        self.pridumaytelogin.insert(0,'Придумайте логин' )
+        self.pridumaytelogin.bind("<Button-1>", self.clear_search_pridumaytelogin)
+        self.pridumaytelogin.place(x=150, y=180, width=200, height=40)
 
+        self.pridumayteparol.insert(0, 'Придумайте пароль')
+        self.pridumayteparol.bind("<Button-1>", self.clear_search_pridumayteparol)
+        self.pridumayteparol.place(x=150, y=235, width=200, height=40)
 
+        self.povtoriteparol.insert(0, 'Повторите пароль')
+        self.povtoriteparol.bind("<Button-1>", self.clear_search_povtoriteparol)
+        self.povtoriteparol.place(x=150, y=290, width=200, height=40)
 
-lbl = Label(root,
-            text = 'Добро пожаловать в AbobaChat!',
-            font = ('Comic Sans MS', 18, 'bold'),
-            bg = 'pink',
-            fg = 'black')
-
-
-
-
-btn.place(x=175, y=270, width=150, height = 30)
-btn1.place(x=175,y=310,width=150, height = 30)
-lbl.place(x=50, y=100, width = 400, height = 50)
-
-
-
-
+        
 
 
+        self.btnCont = Button(self.top,
+                              text='Продолжить',
+                              command=self.Cont,
+                              font=('Comic Sans MS', 14, 'bold'),
+                              fg='white',
+                              bg='pink',
+                              width=10,
+                              height=10,
+                              activebackground='pink',
+                              activeforeground='blue')
+        self.btnCont.place(x=150, y=345, width=200, height=40)
 
-root.mainloop()
+
+    def clear_search_pridumaytelogin(self, event):
+        if self.pridumaytelogin.get() == 'Придумайте логин':
+            self.pridumaytelogin.delete(0, END)
+
+    def clear_search_pridumayteparol(self, event):
+        if self.pridumayteparol.get() == 'Придумайте пароль':
+            self.pridumayteparol.delete(0, END)
+
+    def clear_search_povtoriteparol(self, event):
+        if self.povtoriteparol.get() == 'Повторите пароль':
+            self.povtoriteparol.delete(0, END)
+
+    
+
+    def back_to_AbobaChatApp(self):
+        self.top.destroy()  # Закрыть окно регистрации
+        self.parent.deiconify()  # Показать основное окно снова
 
 
+    def Cont(self):
+        login1 = self.pridumaytelogin.get()
+        parol1 = self.pridumayteparol.get()
+        parol2=self.povtoriteparol.get()
 
+        if login1 != 'Придумайте логин' and parol1 != 'Придумайте пароль' and login1 !='' and parol1 !='' and parol1 == parol2: #проверка на повторную регистрацию
+            self.top.after(500, self.back_to_AbobaChatApp)
+            print(login1,parol1) # исправить на return
+        else:
+            self.lbl1.place(x=100, y=380, width=300, height=30)
 
+class Profil:
+    def __init__(self, parent):
+        self.parent = parent
+        self.top=Toplevel(parent)
+        self.top.title("Aboba chat")  # Заголовок
+        self.top.geometry("500x500")  # Размер
+        self.top.resizable(width=False, height=False)  # Неизменяемость размера
+        #self.top.iconbitmap("../resources/logo.ico")  # Лого
+        self.top.config(bg='purple')  # Фон
+        self.setup_ui()
 
-
-
-
-
-
-
-#btn.pack(expand=True,)
-#btn.pack(anchor=NW)#метод для отображения кнопки
-#btn.pack(fill = None)
-#btn.pack(padx = 2, pady = 200)
-#btn.pack(anchor="c", pady=170)
-#btn1.pack(anchor="c")
-#btn.pack(fill=X, padx=[20, 60], pady=30)
-#btn1.pack(padx = 5, pady = 5)
+if __name__ == "__main__":
+    root = Tk()
+    app = AbobaChatApp(root)
+    root.mainloop()
