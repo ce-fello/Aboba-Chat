@@ -19,14 +19,14 @@ class Client:
                     self.close_connection(client)
                 print('Sent data to server')
             except Exception as error:
-                print('Error while sending data to server\n', error)
+                print('Error while sending data to server!', error)
             try:
                 data = client.recv(1024)
                 if not data:
                     break
                 print('Got data from server:', data.decode())
             except Exception as error:
-                print('Error while recieving data from server', error)
+                print('Error while recieving data from server!', error)
 
     def start_connection(self, hostname_to_connect, port):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
@@ -34,7 +34,7 @@ class Client:
             client.connect((hostname_to_connect, port))   
             print('Connected to', hostname_to_connect, port)
         except Exception as error:
-            print('Error while connecting to server\n', error)
+            print('Error while connecting to server!', error)
         self.transfer_data(client)
 
 client = Client()

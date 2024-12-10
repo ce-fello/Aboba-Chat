@@ -19,20 +19,16 @@ class Server:
 		server.bind((self.__hostname, self.__port))
 		server.listen(number_of_connections)
 		initialize_db()
-		print_users_table()
-		register_user(('chill_guy', 'lalala'))
-		sign_user('huesos', 'lal')
-		sign_user('chill_guy', 'lalala')
 		while True:
 			try:
 				connection, address = server.accept()
 				print('Connected succesfully from', address)
 			except Exception as error:
-				print('error while accepting a connection\n', error)
+				print('error while accepting a connection!', error)
 			try:
 				start_new_thread(client_thread, (connection, ))
 			except Exception as error:
-				print('error while creating new thread', error)
+				print('error while creating new thread!', error)
 			try:
 				if str(address) not in self.__connections.values():
 					self.__connections[self.__last_connection_index] = str(address)
@@ -41,7 +37,7 @@ class Server:
 				else:
 					print('Address already in connections')
 			except Exception as error:
-				print('error while adding to connections list\n', error)
+				print('error while adding to connections list!', error)
 			print(self.__connections)
 
 
@@ -55,10 +51,10 @@ def client_thread(connection):
 		"""
 		data = connection.recv(1024)
 		message = data.decode()
-		print('Got message from client', message)
+		print('Got message from client: ', message)
 		if message == 'CLOSECON':
 			flag_connection_closed = True
-			print('LOG: Connection reset by client')
+			print('Connection reset by client!')
 		message_to_client = '200 OK'
 		data_to_client = message_to_client.encode()
 		connection.send(data_to_client)
