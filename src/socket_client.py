@@ -1,6 +1,7 @@
 import socket
 from constants import *
 
+
 class Client:
     def __init__(self):
         pass

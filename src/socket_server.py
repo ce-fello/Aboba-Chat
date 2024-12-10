@@ -3,6 +3,7 @@ from _thread import *
 from constants import *
 from db_api import *
 
+
 class Server:
 	def __init__(self, hostname, port):
 		self.__hostname = hostname
@@ -18,6 +19,10 @@ class Server:
 		server.bind((self.__hostname, self.__port))
 		server.listen(number_of_connections)
 		initialize_db()
+		print_users_table()
+		register_user(('chill_guy', 'lalala'))
+		sign_user('huesos', 'lal')
+		sign_user('chill_guy', 'lalala')
 		while True:
 			try:
 				connection, address = server.accept()
@@ -59,8 +64,6 @@ def client_thread(connection):
 		connection.send(data_to_client)
 	connection.close()
 
-
-last_id = get_last_id()
 
 server = Server(HOSTNAME, PORT)
 server.run(5)
