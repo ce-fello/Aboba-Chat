@@ -62,4 +62,5 @@ def client_thread(connection):
 
 
 server = Server(HOSTNAME, PORT)
+LAST_ID = get_last_id()
 server.run(5)
