@@ -192,7 +192,7 @@ class Registration:
 
         if login1 != 'Придумайте логин' and parol1 != 'Придумайте пароль' and login1 !='' and parol1 !='' and parol1 == parol2: #проверка на повторную регистрацию
             self.top.after(500, self.back_to_AbobaChatApp)
-            print(login1,parol1) # исправить на return
+            print(login1,parol1) #занесение логина и пароля в БД
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
 
@@ -200,12 +200,12 @@ class Profil:
     def __init__(self, parent):
         self.parent = parent
         self.top=Toplevel(parent)
-        self.top.title("Aboba chat")  # Заголовок
-        self.top.geometry("500x500")  # Размер
-        self.top.resizable(width=False, height=False)  # Неизменяемость размера
+        self.top.title("Aboba chat")
+        self.top.geometry("500x500")
+        self.top.resizable(width=False, height=False)
         #self.top.iconbitmap("../resources/logo.ico")  # Лого
-        self.top.config(bg='purple')  # Фон
-        self.choice=IntVar(value='male')
+        self.top.config(bg='purple')
+        self.choice=IntVar(value=0)
         self.setup_ui()    
 
     def setup_ui(self):
@@ -220,8 +220,8 @@ class Profil:
         self.surname.bind("<Button-1>", self.clear_search_surname)
         self.surname.place(x=70, y=155, width=200, height=40)
 
-        Radiobutton(self.top, text='male', variable=self.choice, value='male').place(x=70, y=210, width=70, height=30)
-        Radiobutton(self.top, text='female', variable=self.choice, value='female').place(x=150, y=210, width=70, height=30)
+        Radiobutton(self.top, text='male', variable=self.choice, value=0).place(x=70, y=210, width=70, height=30)
+        Radiobutton(self.top, text='female', variable=self.choice, value=1).place(x=150, y=210, width=70, height=30)
 
         self.lbl=Label(self.top,
                           text='Write about yourself',
@@ -263,10 +263,11 @@ class Profil:
 
     def cont(self):
         name=self.name.get() 
-        surname=self.surname
-        gender=self.choice
+        surname=self.surname.get()
+        gender=self.choice.get()#male=0  female=1
+        info=self.info.get(1.0,END)
         Anketa(self.parent)
-        print(name)
+        print(name,surname,gender,info)#занесение данных в БД
 
         
 
@@ -275,13 +276,56 @@ class Anketa:
     def __init__(self, parent):
         self.parent = parent
         self.top=Toplevel(parent)
-        self.top.title("Aboba chat")  # Заголовок
-        self.top.geometry("500x500")  # Размер
-        self.top.resizable(width=False, height=False)  # Неизменяемость размера
+        self.top.title("Aboba chat")
+        self.top.geometry("500x500")
+        self.top.resizable(width=False, height=False) 
         #self.top.iconbitmap("../resources/logo.ico")  # Лого
-        self.top.config(bg='purple')  # Фон
-        #self.setup_ui()
+        self.top.config(bg='purple') 
+        self.setup_ui()
 
+    def setup_ui(self):
+        self.like=Button(self.top,
+                    text='Like',
+                    command=self.like,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+        self.like.place(x=150, y=420, width=100, height=40)
+
+        self.dislike=Button(self.top,
+                    text='Dislike',
+                    command=self.dislike,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+        self.dislike.place(x=270, y=420, width=200, height=40)
+
+        self.name = Label(self.top,
+                          text='Name',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
+        self.name.place(x=270, y=200, width=200, height=40)
+    
+    def like(self):#Изменение параметров, подтягивание данных из БД
+        self.name.config(text = 'имя другого человека из БД' )
+    
+    def dislike(self):
+        self.name.config(text = 'имя другого человека из БД')
+
+        
+
+
+
+        
 
 if __name__ == "__main__":
     root = Tk()
