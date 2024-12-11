@@ -1,4 +1,5 @@
 import socket
+import json
 from _thread import *
 from constants import *
 from db_api import *
@@ -44,11 +45,6 @@ class Server:
 def client_thread(connection):
 	flag_connection_closed = False
 	while not flag_connection_closed:
-		"""
-		Function for processing the behavior of each client
-		:param connection: tcp connection 
-		:returns: void
-		"""
 		data = connection.recv(1024)
 		message = data.decode()
 		print('Got message from client: ', message)

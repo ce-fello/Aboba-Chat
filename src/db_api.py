@@ -34,12 +34,26 @@ def get_form_of_user(user_id):
 	try:
 		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
 				 (user_id, ))
-		result = cursor.fetchone()[3]
+		result = cursor.fetchone()[4]
 		db_connection.close()
 		return result
 	except Exception as error:
 		db_connection.close()
 		print('Failed to get form of user!', error)
+
+
+def get_bio_of_user(user_id):
+	db_connection = sqlite3.connect(DB)
+	cursor = db_connection.cursor()
+	try:
+		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
+				 (user_id, ))
+		result = cursor.fetchone()[3]
+		db_connection.close()
+		return result
+	except Exception as error:
+		db_connection.close()
+		print('Failed to get bio of user!', error)
 
 
 def update_user_form(user_id, new_bio):
@@ -100,7 +114,8 @@ def initialize_db():
 	user_id INTEGER PRIMARY KEY,
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	bio TEXT
+	bio TEXT,
+	form TEXT
 	)
 	''')
 	db_connection.commit()
