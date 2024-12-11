@@ -96,9 +96,9 @@ class AbobaChatApp:
     def Voyti(self):
         login = self.vveditelogin.get()
         parol = self.vvediteparol.get()
-        if login != 'Введите логин' and parol != 'Введите пароль' and login != '' and parol !='': #проверка на базу данных
+        if login != 'Введите логин' and parol != 'Введите пароль' and login != '' and parol !='':#проверка на базу данных
+            root.withdraw() 
             Profil(self.root)
-            self.root.destroy()
         else:
             self.vveditedr.place(x=100, y=375, width=300, height=50)
 
@@ -205,7 +205,83 @@ class Profil:
         self.top.resizable(width=False, height=False)  # Неизменяемость размера
         #self.top.iconbitmap("../resources/logo.ico")  # Лого
         self.top.config(bg='purple')  # Фон
-        self.setup_ui()
+        self.choice=IntVar(value='male')
+        self.setup_ui()    
+
+    def setup_ui(self):
+        self.name=Entry(self.top)
+        self.surname=Entry(self.top)
+
+        self.name.insert(0,'Enter your name' )
+        self.name.bind("<Button-1>", self.clear_search_name)
+        self.name.place(x=70, y=100, width=200, height=40)
+
+        self.surname.insert(0,'Enter your surname')
+        self.surname.bind("<Button-1>", self.clear_search_surname)
+        self.surname.place(x=70, y=155, width=200, height=40)
+
+        Radiobutton(self.top, text='male', variable=self.choice, value='male').place(x=70, y=210, width=70, height=30)
+        Radiobutton(self.top, text='female', variable=self.choice, value='female').place(x=150, y=210, width=70, height=30)
+
+        self.lbl=Label(self.top,
+                          text='Write about yourself',
+                          font=('Comic Sans MS', 12, 'bold'),
+                          bg='purple',
+                          fg='white')
+        self.lbl.place(y=255, x=60, width= 200, height =30)
+
+        self.lbl1=Label(self.top,
+                          text='Please, tell about yourself',
+                          font=('Comic Sans MS', 16, 'bold'),
+                          bg='purple',
+                          fg='white')
+        self.lbl1.place(y=30, x=60, width= 300, height =50)
+
+
+        self.info=Text(self.top)
+        self.info.place(y=300, x=70, width= 360, height =100)
+
+        self.btnregprof = Button(self.top,
+                              text='Continue',
+                              command=self.cont,
+                              font=('Comic Sans MS', 14, 'bold'),
+                              fg='white',
+                              bg='pink',
+                              width=10,
+                              height=10,
+                              activebackground='pink',
+                              activeforeground='blue')
+        self.btnregprof.place(x=150, y=420, width=200, height=40)
+
+    
+    def clear_search_name(self, event):
+        if self.name.get() == 'Enter your name':
+            self.name.delete(0, END)
+    def clear_search_surname(self, event):
+        if self.surname.get() == 'Enter your surname':
+            self.surname.delete(0, END)
+
+    def cont(self):
+        name=self.name.get() 
+        surname=self.surname
+        gender=self.choice
+        Anketa(self.parent)
+        print(name)
+
+        
+
+
+class Anketa:
+    def __init__(self, parent):
+        self.parent = parent
+        self.top=Toplevel(parent)
+        self.top.title("Aboba chat")  # Заголовок
+        self.top.geometry("500x500")  # Размер
+        self.top.resizable(width=False, height=False)  # Неизменяемость размера
+        #self.top.iconbitmap("../resources/logo.ico")  # Лого
+        self.top.config(bg='purple')  # Фон
+        #self.setup_ui()
+
 
 if __name__ == "__main__":
     root = Tk()
