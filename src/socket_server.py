@@ -47,7 +47,7 @@ def process_data(data: dict):
 		case 'CLOSECON':
 			pass
 		case 'REGUSER':
-			if register_user(data['login'], data['password'], data['gender'], data['bio'])
+			register_user(data['login'], data['password'], data['gender'], data['bio'])
 		case 'LOGUSER':
 			sign_user(data['login'], data['password'])
 
