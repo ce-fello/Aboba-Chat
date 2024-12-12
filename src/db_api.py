@@ -88,17 +88,17 @@ def sign_user(login, password):
 	return False
 
 
-def register_user(user_info):
+def register_user(username, password, gender, bio):
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
 		cursor.execute('''
-		INSERT INTO Users (user_id, username, password, bio) VALUES (?, ?, ?, ?)
-		''', (LAST_ID + 1, user_info[0], user_info[1], None))
+		INSERT INTO Users (user_id, username, password, gender, bio, form) VALUES (?, ?, ?, ?, ?, ?)
+		''', (LAST_ID + 1, username, password, gender, bio, None))
 		db_connection.commit()
 		db_connection.close()
 		update_last_id()
-		print('Registered user', user_info)
+		print('Registered user', username, password, gender, bio)
 		return True
 	except Exception as error:
 		db_connection.close()
@@ -114,7 +114,7 @@ def initialize_db():
 	user_id INTEGER PRIMARY KEY,
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	is_human BOOL,
+	gender BOOL,
 	bio TEXT,
 	form TEXT
 	)

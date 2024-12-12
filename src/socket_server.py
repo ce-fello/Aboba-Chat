@@ -42,15 +42,24 @@ class Server:
 			print(self.__connections)
 
 
+def process_data(data: dict):
+	match data['key']:
+		case 'CLOSECON':
+			pass
+		case 'REGUSER':
+			if register_user(data['login'], data['password'], data['gender'], data['bio'])
+		case 'LOGUSER':
+			sign_user(data['login'], data['password'])
+
+
 def client_thread(connection):
 	flag_connection_closed = False
 	while not flag_connection_closed:
 		data = connection.recv(1024)
 		message = data.decode()
-		print('Got message from client: ', message)
-		if message == 'CLOSECON':
-			flag_connection_closed = True
-			print('Connection reset by client!')
+		deserialised = json.loads(message)
+		print('Got message from client: ', deserialised)
+		process_data(deserialised)
 		message_to_client = '200 OK'
 		data_to_client = message_to_client.encode()
 		connection.send(data_to_client)
