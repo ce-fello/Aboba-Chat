@@ -181,8 +181,8 @@ class Registration:
     
 
     def back_to_AbobaChatApp(self):
-        self.top.destroy()  # Закрыть окно регистрации
-        self.parent.deiconify()  # Показать основное окно снова
+        self.top.destroy()
+        self.parent.deiconify() 
 
 
     def Cont(self):
@@ -203,7 +203,7 @@ class Profil:
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
         self.top.resizable(width=False, height=False)
-        #self.top.iconbitmap("../resources/logo.ico")  # Лого
+        #self.top.iconbitmap("../resources/logo.ico")
         self.top.config(bg='purple')
         self.choice=IntVar(value=0)
         self.setup_ui()    
@@ -228,7 +228,7 @@ class Profil:
                           font=('Comic Sans MS', 12, 'bold'),
                           bg='purple',
                           fg='white')
-        self.lbl.place(y=255, x=60, width= 200, height =30)
+        self.lbl.place(y=245, x=60, width= 200, height =30)
 
         self.lbl1=Label(self.top,
                           text='Please, tell about yourself',
@@ -239,7 +239,7 @@ class Profil:
 
 
         self.info=Text(self.top)
-        self.info.place(y=300, x=70, width= 360, height =100)
+        self.info.place(y=270, x=70, width= 360, height =100)
 
         self.btnregprof = Button(self.top,
                               text='Continue',
@@ -253,6 +253,12 @@ class Profil:
                               activeforeground='blue')
         self.btnregprof.place(x=150, y=420, width=200, height=40)
 
+        self.lbl1 = Label(self.top,
+                          text='Please, fill in the gaps correctly',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
+
     
     def clear_search_name(self, event):
         if self.name.get() == 'Enter your name':
@@ -262,12 +268,17 @@ class Profil:
             self.surname.delete(0, END)
 
     def cont(self):
-        name=self.name.get() 
-        surname=self.surname.get()
-        gender=self.choice.get()#male=0  female=1
-        info=self.info.get(1.0,END)
-        Anketa(self.parent)
-        print(name,surname,gender,info)#занесение данных в БД
+        if self.name.get()!='' and self.name.get()!='Enter your name' and self.surname.get()!='' and self.surname.get()!='Enter your surname':
+            name=self.name.get() 
+            surname=self.surname.get()
+            gender=self.choice.get()#male=0  female=1
+            info=self.info.get(1.0,END)
+            self.top.withdraw()
+            Anketa(self.parent)
+            print(name,surname,gender,info)#занесение данных об анкете в БД
+        else:
+            self.lbl1.place(x=100, y=380, width=300, height=30)
+        
 
         
 
@@ -279,12 +290,27 @@ class Anketa:
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
         self.top.resizable(width=False, height=False) 
-        #self.top.iconbitmap("../resources/logo.ico")  # Лого
+        #self.top.iconbitmap("../resources/logo.ico")
         self.top.config(bg='purple') 
         self.setup_ui()
 
+    
+
     def setup_ui(self):
-        self.like=Button(self.top,
+        self.btn_start_search=Button(self.top,
+                    text='Start search',
+                    command=self.start_search,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+        self.btn_start_search.place(x=175, y=230, width=150, height=40)
+
+
+        self.btnlike=Button(self.top,
                     text='Like',
                     command=self.like,
                     font=('Comic Sans MS', 14, 'bold'),
@@ -294,9 +320,9 @@ class Anketa:
                     height=10,
                     activebackground='pink',
                     activeforeground='blue')
-        self.like.place(x=150, y=420, width=100, height=40)
+        
 
-        self.dislike=Button(self.top,
+        self.btndislike=Button(self.top,
                     text='Dislike',
                     command=self.dislike,
                     font=('Comic Sans MS', 14, 'bold'),
@@ -306,24 +332,118 @@ class Anketa:
                     height=10,
                     activebackground='pink',
                     activeforeground='blue')
-        self.dislike.place(x=270, y=420, width=200, height=40)
+        
 
         self.name = Label(self.top,
                           text='Name',
                           font=('Comic Sans MS', 10, 'bold'),
                           bg='purple',
                           fg='white')
-        self.name.place(x=270, y=200, width=200, height=40)
-    
-    def like(self):#Изменение параметров, подтягивание данных из БД
-        self.name.config(text = 'имя другого человека из БД' )
-    
-    def dislike(self):
-        self.name.config(text = 'имя другого человека из БД')
-
         
 
+        self.surname = Label(self.top,
+                          text='Surname',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
+        
 
+        self.gender = Label(self.top,
+                          text='Gender',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
+
+        self.info= Label(self.top,
+                          text='Bio',
+                          font=('Comic Sans MS', 10, 'bold'),
+                          bg='purple',
+                          fg='white')
+        self.btnChats=Button(self.top,
+                            command=self.open_chats,
+                            text='Open chats',
+                            font=('Comic Sans MS', 6, 'bold'),
+                            bg='purple',
+                            fg='white')
+        self.btnChats.place(x=20,y=20,width=50,height=20)
+        
+    def start_search(self):#подтягивание данных из БД
+        self.name.config(text = 'имя другого человека из БД' )
+        self.surname.config(text = 'фамилия другого человека из БД')
+        self.gender.config(text = 'пол')
+        self.info.config(text='информация')
+        self.name.place(x=150, y=50, width=200, height=40)
+        self.surname.place(x=150, y=100, width=200, height=40)
+        self.gender.place(x=150, y=150, width=200, height=20)
+        self.info.place(x=150, y=180, width= 200, height =150)
+        self.btn_start_search.place_forget()
+        self.btnlike.place(x=100, y=420, width=100, height=40)
+        self.btndislike.place(x=300, y=420, width=100, height=40)
+    
+    def like(self):#Изменение параметров, подтягивание данных из БД
+        self.name.config(text = 'имя другого человека из БД лайк' )
+        self.surname.config(text = 'фамилия другого человека из БД лайк')
+        self.gender.config(text = 'пол лайк')
+        self.info.config(text='информация лайк')
+       
+    
+    def dislike(self):
+        self.name.config(text = 'имя другого человека из БД диз лайк')
+        self.surname.config(text = 'фамилия другого человека из БД дизлайк')
+        self.gender.config(text = 'пол дизлайк')
+        self.info.config(text='информация дизлайк')
+    
+    def open_chats(self):
+        Chat(self.parent)
+
+
+    
+
+class Chat:
+    def __init__(self, parent):
+        self.parent = parent
+        self.top=Toplevel(parent)
+        self.top.title("Aboba chat")
+        self.top.geometry("500x500")
+        self.top.resizable(width=False, height=False) 
+        #self.top.iconbitmap("../resources/logo.ico")
+        self.top.config(bg='purple') 
+        #self.setup_ui()
+
+        self.canvas = Canvas(self.top)
+        self.scrollbar = Scrollbar(self.top, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = Frame(self.canvas)
+
+        # Настройка канваса
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Привязываем полосу прокрутки к канвасу
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        # Расположение виджетов
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
+
+        # Изначально создаем несколько кнопок
+        self.button_count = 0
+        
+
+        # Кнопка для добавления новой кнопки
+        add_button = Button(self.top, text="Добавить кнопку", command=self.add_button)
+        add_button.pack(pady=10)
+
+    def add_button(self):
+        """Добавляет новую кнопку в прокручиваемый список."""
+        self.button_count += 1
+        button = Button(self.scrollable_frame, text=f"Кнопка {self.button_count}")
+        button.pack(pady=5)  # Отступы между кнопками
 
         
 
