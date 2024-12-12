@@ -12,7 +12,7 @@ def get_last_id():
 		return result
 	except Exception as error:
 		db_connection.close()
-		print('Failed get last ID!', error)
+		print('Failed to get last ID!', error)
 	return -1
 
 
@@ -114,6 +114,7 @@ def initialize_db():
 	user_id INTEGER PRIMARY KEY,
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
+	is_human BOOL,
 	bio TEXT,
 	form TEXT
 	)
