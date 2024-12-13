@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+
 
 
 class AbobaChatApp:
@@ -11,11 +11,6 @@ class AbobaChatApp:
         #self.root.iconbitmap("../resources/logo.ico")
         self.root.config(bg='purple')
         self.setup_ui()
-        self.root.protocol('WM_DELETE_WINDOW', self.on_closing)
-    
-    def on_closing(self):
-        if messagebox.askokcancel('Выход из приложения', 'Хотите выйти из приложения?'):
-            self.root.destroy()
 
     def setup_ui(self):
 
@@ -66,11 +61,11 @@ class AbobaChatApp:
         self.btnVhod.place_forget()
 
         self.vveditelogin.place(x=150, y=240, width=200, height=40)
-        self.vveditelogin.insert(0, 'Введите логин')
+        self.vveditelogin.insert(0, 'Enter the login')
         self.vveditelogin.bind("<Button-1>", self.clear_search_log)
 
         self.vvediteparol.place(x=150, y=295, width=200, height=40)
-        self.vvediteparol.insert(0, 'Введите пароль')
+        self.vvediteparol.insert(0, 'Enter the password')
         self.vvediteparol.bind("<Button-1>", self.clear_search_log1)
 
         self.autorization.place(x=50, y=170, width=400, height=50)
@@ -86,17 +81,17 @@ class AbobaChatApp:
         self.btnVoyti.place(x=150, y=350, width=200, height=40)
 
     def clear_search_log(self, event):
-        if self.vveditelogin.get() == 'Введите логин':
+        if self.vveditelogin.get() == 'Enter the login':
             self.vveditelogin.delete(0, END)
 
     def clear_search_log1(self, event):
-        if self.vvediteparol.get() == 'Введите пароль':
+        if self.vvediteparol.get() == 'Enter the password':
             self.vvediteparol.delete(0, END)
 
     def Voyti(self):
         login = self.vveditelogin.get()
         parol = self.vvediteparol.get()
-        if login != 'Введите логин' and parol != 'Введите пароль' and login != '' and parol !='':#проверка на базу данных
+        if login != 'Enter the login' and parol != 'Enter the password' and login != '' and parol !='':#проверка на базу данных
             root.withdraw() 
             Anketa(self.root)
         else:
@@ -118,7 +113,6 @@ class Registration:
         #self.top.iconbitmap("../resources/logo.ico")
         self.top.config(bg='purple')
         self.setup_ui()
-        
 
     def setup_ui(self):
         self.lbl = Label(self.top,
@@ -202,9 +196,9 @@ class Profil:
         #self.top.iconbitmap("../resources/logo.ico")
         self.top.config(bg='purple')
         self.choice=IntVar(value=0)
-        self.setup_ui(self.cont)    
+        self.setup_ui()    
 
-    def setup_ui(self, func):
+    def setup_ui(self):
         self.name=Entry(self.top)
         self.surname=Entry(self.top)
 
@@ -239,7 +233,7 @@ class Profil:
 
         self.btnregprof = Button(self.top,
                               text='Continue',
-                              command=func,
+                              command=self.cont,
                               font=('Comic Sans MS', 14, 'bold'),
                               fg='white',
                               bg='pink',
@@ -360,6 +354,9 @@ class Anketa:
                     activeforeground='blue')
         
 
+        
+        
+
         self.btndislike=Button(self.top1,
                     text='Dislike',
                     command=self.dislike,
@@ -375,27 +372,27 @@ class Anketa:
         self.name = Label(self.top1,
                           text='Name',
                           font=('Comic Sans MS', 10, 'bold'),
-                          bg='black',
+                          bg='purple',
                           fg='white')
         
 
         self.surname = Label(self.top1,
                           text='Surname',
                           font=('Comic Sans MS', 10, 'bold'),
-                          bg='black',
+                          bg='purple',
                           fg='white')
         
 
         self.gender = Label(self.top1,
                           text='Gender',
                           font=('Comic Sans MS', 10, 'bold'),
-                          bg='black',
+                          bg='purple',
                           fg='white')
 
         self.info= Label(self.top1,
                           text='Bio',
                           font=('Comic Sans MS', 10, 'bold'),
-                          bg='black',
+                          bg='purple',
                           fg='white')
         
         
@@ -418,6 +415,7 @@ class Anketa:
         self.gender.config(text = 'пол лайк')
         self.info.config(text='информация лайк')
         self.add_button()
+        
        
     
     def dislike(self):
@@ -425,9 +423,14 @@ class Anketa:
         self.surname.config(text = 'фамилия другого человека из БД дизлайк')
         self.gender.config(text = 'пол дизлайк')
         self.info.config(text='информация дизлайк')
+    
+    def come_back(self):
+        self.top2.withdraw()
+        #Anketa(self.parent)
         
     
     def open_chats(self):
+        #self.top1.withdraw()
         self.top2=Toplevel()
         self.top2.title("Aboba chat")
         self.top2.geometry("500x500")
@@ -438,6 +441,19 @@ class Anketa:
         self.canvas.config(bg='purple',highlightbackground='purple')
         self.scrollbar = Scrollbar(self.top2, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = Frame(self.canvas,bg='purple')
+
+        self.btn_come_back=Button(self.top2,
+                    text='Come back',
+                    command=self.come_back,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+        self.btn_come_back.place(x=400, y=100, width=70, height=40)
+        
         
 
         # Настройка канваса
@@ -467,15 +483,57 @@ class Anketa:
         # Кнопка для добавления новой кнопки
         #add_button = Button(self.top2, text="Добавить кнопку", command=self.add_button)
         #add_button.pack(pady=10)
+    def open_ch(self):
+        Chat(self.parent)
+
+    
 
     def add_button(self):
         """Добавляет новую кнопку в прокручиваемый список."""
         self.button_count += 1
         button = Button(self.scrollable_frame, text=f"Open chat with {self.button_count}",bg='pink',fg ='white',
                         activebackground='pink',
-                        activeforeground='blue')
+                        activeforeground='blue', 
+                        command=self.open_ch)
         button.pack(padx=50,pady=5,ipadx=100,ipady=15)  # Отступы между кнопками
  
+
+class Chat:
+    def __init__(self, parent):
+        self.parent = parent
+        self.top3 = Toplevel(parent)
+        self.top3.title("Aboba chat")
+        self.top3.resizable(width=False, height=False) 
+        #self.top1.iconbitmap("../resources/logo.ico")
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.label1 = Label(self.top3, bg="pink", fg="black", text="Welcome", font="Helvetica 13 bold", pady=10, width=20, height=1)
+        self.label1.grid(row=0)
+
+        self.txt = Text(self.top3, bg="pink", fg="black", font="Helvetica 14", width=60)
+        self.txt.grid(row=1, column=0, columnspan=2)
+
+        self.scrollbar = Scrollbar(self.txt)
+        self.scrollbar.place(relheight=1, relx=0.974)
+        
+        # Привязка scrollbar к текстовому полю
+        self.txt.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.config(command=self.txt.yview)
+
+        self.e = Entry(self.top3, bg="pink", fg="black", font="Helvetica 14", width=55)
+        self.e.grid(row=2, column=0)
+
+        self.send_button = Button(self.top3, text="Send", font="Helvetica 13 bold", bg="pink", command=self.send)
+        self.send_button.grid(row=2, column=1)
+
+    def send(self):
+        message = "You -> " + self.e.get()
+        self.txt.insert(END, "\n" + message)
+        self.e.delete(0, END)
+
+
+
 
 class Change_inf_prof(Profil):
     def __init__(self, parent):
