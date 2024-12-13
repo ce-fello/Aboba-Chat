@@ -6,14 +6,25 @@ def get_last_id():
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
-		cursor.execute('''SELECT MAX(user_id) FROM Users''')
-		result = int(cursor.fetchone()[0])
+		cursor.execute('''SELECT name FROM sqlite_master WHERE type='table' AND name='Users' ''')
+		table = cursor.fetchone()
+		db_connection.commit()
+		if table != None:
+			cursor.execute('''SELECT EXISTS(SELECT 1 FROM Users WHERE user_id = 1)''')
+			exists = cursor.fetchone()[0]
+			db_connection.commit()
+			if exists == 1:
+				cursor.execute('''SELECT MAX(user_id) FROM Users''')
+				index = cursor.fetchone()
+				if index[0] != ('None',):
+					result = int(index[0])
+					print(result, 'get_last_id() result')
+					return result
 		db_connection.close()
-		return result
 	except Exception as error:
 		db_connection.close()
 		print('Failed to get last ID!', error)
-	return -1
+	return 1
 
 
 def print_users_table():
@@ -91,18 +102,21 @@ def sign_user(login, password):
 def register_user(username, password, gender, bio):
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
+	LAST_ID = get_last_id()
 	try:
+		print(LAST_ID, 'LAST_ID before db insert')
 		cursor.execute('''
 		INSERT INTO Users (user_id, username, password, gender, bio, form) VALUES (?, ?, ?, ?, ?, ?)
 		''', (LAST_ID + 1, username, password, gender, bio, None))
 		db_connection.commit()
 		db_connection.close()
-		update_last_id()
+		increment_last_id()
 		print('Registered user', username, password, gender, bio)
+		print(LAST_ID, 'LAST_ID after reg')
 		return True
 	except Exception as error:
 		db_connection.close()
-		print('Failed to register user!', error)
+		print('Failed to register user!', error, LAST_ID, 'LAST_ID in register_user()')
 	return False
 
 

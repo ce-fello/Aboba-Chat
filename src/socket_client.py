@@ -10,6 +10,21 @@ class Client:
     def close_connection(self):
         self.client.close()
 
+    def get_response(self) -> bool:
+        try:
+            print('here')
+            message = self.client.recv(1024)
+            print(message)
+            print(message.decode())
+            data = json.loads(message.decode())
+            print(data)
+            print('Got data from server:', data)
+            if data['value'] == 'ok':
+                return True
+        except Exception as error:
+            print('Error while recieving data from server!', error)
+        return False
+    
     def transfer_data(self, message: dict):
         try:
             data = json.dumps(message).encode() 
@@ -17,11 +32,6 @@ class Client:
             print('Sent data to server')
         except Exception as error:
             print('Error while sending data to server!', error)
-        try:
-            data = self.client.recv(1024)
-            print('Got data from server:', data.decode())
-        except Exception as error:
-            print('Error while recieving data from server!', error)
 
     def start_connection(self, hostname_to_connect, port):
         try:

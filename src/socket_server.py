@@ -12,14 +12,24 @@ class Server:
 		self.__connections = {}
 		self.__last_connection_index = 0
 
-	def send_message_to_client():
-		pass
+	def send_response(self, connection, is_ok: bool):
+		if is_ok == True:
+			message = {'key': 'RESPONSE', 'value': 'ok'}
+		else:
+			message = {'key': 'RESPONSE', 'value': 'bad'}
+		data = json.dumps(message).encode()
+		print(json.dumps(message).encode())
+		try:
+			connection.send(data)
+		except Exception as error:
+			print('Failed to send ok response to client', connection, error)
 
 	def run(self, number_of_connections):
 		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server.bind((self.__hostname, self.__port))
 		server.listen(number_of_connections)
 		initialize_db()
+		print_users_table()
 		while True:
 			try:
 				connection, address = server.accept()
@@ -27,7 +37,7 @@ class Server:
 			except Exception as error:
 				print('error while accepting a connection!', error)
 			try:
-				start_new_thread(client_thread, (connection, ))
+				start_new_thread(client_thread(self, connection), (connection, ))
 			except Exception as error:
 				print('error while creating new thread!', error)
 			try:
@@ -42,30 +52,26 @@ class Server:
 			print(self.__connections)
 
 
-def process_data(data: dict):
+def process_data(server: Server, connection, data: dict):
 	match data['key']:
 		case 'CLOSECON':
 			pass
 		case 'REGUSER':
-			register_user(data['login'], data['password'], data['gender'], data['bio'])
+			server.send_response(connection, register_user(data['login'], data['password'], data['gender'], data['bio']))
 		case 'LOGUSER':
-			sign_user(data['login'], data['password'])
+			server.send_response(connection, sign_user(data['login'], data['password']))
 
 
-def client_thread(connection):
+def client_thread(server, connection):
 	flag_connection_closed = False
 	while not flag_connection_closed:
 		data = connection.recv(1024)
 		message = data.decode()
 		deserialised = json.loads(message)
 		print('Got message from client: ', deserialised)
-		process_data(deserialised)
-		message_to_client = '200 OK'
-		data_to_client = message_to_client.encode()
-		connection.send(data_to_client)
+		process_data(server, connection, deserialised)
 	connection.close()
 
 
 server = Server(HOSTNAME, PORT)
-LAST_ID = get_last_id()
 server.run(5)

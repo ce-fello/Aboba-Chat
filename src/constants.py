@@ -3,5 +3,7 @@ PORT = 3030
 DB = 'my_database.db'
 LAST_ID = 0
 
-def update_last_id(id=LAST_ID):
-    id += 1
+def increment_last_id():
+    global LAST_ID
+    LAST_ID += 1
+    

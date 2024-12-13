@@ -102,8 +102,9 @@ class AbobaChatApp:
         if login != 'Введите логин' and password != 'Введите пароль' and login != '' and password != '':#проверка на базу данных
             message = {'key': 'LOGUSER', 'login': login, 'password': password}
             self.client.transfer_data(message)
-            root.withdraw() 
-            Profil(self.root, self.client)
+            if self.client.get_response():
+                root.withdraw() 
+                Profil(self.root, self.client)
         else:
             self.vveditedr.place(x=100, y=375, width=300, height=50)
 
@@ -282,7 +283,7 @@ class Profil:
 
 
 class Anketa:
-    def __init__(self, parent):
+    def __init__(self, parent, client):
         self.parent = parent
         self.client = client
         self.top=Toplevel(parent)
