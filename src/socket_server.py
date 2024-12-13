@@ -116,6 +116,8 @@ def process_data(server: Server, connection: socket, data: dict):
 			update_user_info(data['user_id'], data['surname'], data['name'], data['is_male'], data['bio'])
 		case 'GETBIO':
 			server.send_message(connection, get_bio_of_user(data['user_id']))
+		case 'GETID':
+			server.send_message(connection, get_id_by_login(data['login']))
 
 
 def client_thread(server: Server, connection: socket):

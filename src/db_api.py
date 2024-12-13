@@ -210,6 +210,7 @@ def get_id_by_login(login: str):
 	except Exception as error:
 		db_connection.close()
 		print('Failed to get bio of user!', error)
+	return -1
 
 
 def get_bio_of_user(user_id):
