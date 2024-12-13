@@ -10,6 +10,13 @@ class Client:
     def close_connection(self):
         self.client.close()
 
+    def get_data(self):
+        try:
+            message = self.client.recv(1024)
+            return json.loads(message.decode())
+        except Exception as error:
+            print('Error while recieving data from server!', error)
+
     def get_response(self) -> bool:
         try:
             message = self.client.recv(1024)
