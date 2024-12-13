@@ -199,7 +199,7 @@ class Registration:
         if login_1 != 'Придумайте логин' and password_1 != 'Придумайте пароль' and login_1 !='' and password_1 !='' and password_1 == password_2: #проверка на повторную регистрацию
             if not 4 <= len(login_1) <= 16 and not 6 <= len(password_1) <= 20:
                 self.vveditedr.place(x=100, y=375, width=300, height=50)
-            message = {'key': 'REGUSER', 'login': login_1, 'password': password_1, 'gender': None, 'bio': None, 'form': None}
+            message = {'key': 'REGUSER', 'login': login_1, 'password': password_1}
             self.client.transfer_data(message)
             self.top.after(500, self.back_to_AbobaChatApp)
         else:
