@@ -19,7 +19,7 @@ class Server:
 		self.__hostname = hostname
 		self.__port = port
 		"""
-		:param __hostname: name or ip address of host
+		:param __hostname: name or ip address of host.
 		:type: str
 		:param __port: number of port on which server is run.
 		:type: int
@@ -41,11 +41,20 @@ class Server:
 		else:
 			message = {'key': 'RESPONSE', 'value': 'bad'}
 		data = json.dumps(message).encode()
-		print(json.dumps(message).encode())
+		print(data)
 		try:
 			connection.send(data)
 		except Exception as error:
 			print('Failed to send ok response to client', connection, error)
+
+	def send_message(self, connection, message):
+		data = json.dumps(message).encode()
+		print(data)
+		try:
+			connection.send(data)
+		except Exception as error:
+			print('Failed to send ok response to client', connection, error)
+
 
 	def run(self, number_of_connections: int):
 		"""
@@ -61,6 +70,8 @@ class Server:
 		server.bind((self.__hostname, self.__port))
 		server.listen(number_of_connections)
 		initialize_db()
+		print_users_table()
+		print_chats_table()
 		while True:
 			try:
 				connection, address = server.accept()
@@ -96,6 +107,14 @@ def process_data(server: Server, connection: socket, data: dict):
 			server.send_response(connection, sign_user(data['login'], data['password']))
 		case 'CRTCHAT':
 			server.send_response(connection, create_chat(data['members_id']))
+		case 'ADDMSG':
+			add_message_to_chat(data['chat_id'], data['owner_id'], data['message'])
+		case 'GETCHATS':
+			server.send_message(connection, get_chats(data['user_id']))
+		case 'UPDUSERINFO':
+			update_user_info(data['user_id'], data['surname'], data['name'], data['is_male'], data['bio'])
+		case 'GETBIO':
+			server.send_message(connection, get_bio_of_user(data['user_id']))
 
 
 def client_thread(server: Server, connection: socket):

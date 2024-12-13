@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from constants import *
 
 
@@ -175,26 +176,29 @@ def print_users_table():
 		print('Failed to print table!', error)
 
 
-def get_form_of_user(user_id) -> list[int]:
-	"""
-	Function that gets list of IDs of chats that user is member of by ID.
+# def get_form_of_user(user_id) -> list[int]:
+# 	"""
+# 	Function that gets list of IDs of chats that user is member of by ID.
 
-	:param user_id: ID of user whose chats we are getting.
-	:type: int
-	:returns: list of IDs.
-	:rtype: list[int]
-	"""
-	db_connection = sqlite3.connect(DB)
-	cursor = db_connection.cursor()
-	try:
-		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
-				 (user_id, ))
-		result = cursor.fetchone()[4]
-		db_connection.close()
-		return result
-	except Exception as error:
-		db_connection.close()
-		print('Failed to get form of user!', error)
+# 	:param user_id: ID of user whose chats we are getting.
+# 	:type: int
+# 	:returns: list of IDs.
+# 	:rtype: list[int]
+# 	"""
+# 	db_connection = sqlite3.connect(DB)
+# 	cursor = db_connection.cursor()
+# 	try:
+# 		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
+# 				 (user_id, ))
+# 		result = cursor.fetchone()[4]
+# 		db_connection.close()
+# 		return result
+# 	except Exception as error:
+# 		db_connection.close()
+# 		print('Failed to get form of user!', error)
+
+
+# def get_id_by_user()
 
 
 def get_bio_of_user(user_id):
@@ -263,8 +267,8 @@ def create_chat(members_ids: str) -> bool:
 	print(LAST_CHAT_ID)
 	try:
 		cursor.execute('''
-		INSERT INTO Chats (chat_id, members_id, messages) VALUES (?, ?, ?)
-		''', (LAST_CHAT_ID + 1, members_ids, '',))
+		INSERT INTO Chats (chat_id, members_id, number_of_messages, messages) VALUES (?, ?, ?, ?)
+		''', (LAST_CHAT_ID + 1, members_ids, 0, '{}',))
 		db_connection.commit()
 		db_connection.close()
 		increment_last_chat_id()
@@ -274,6 +278,24 @@ def create_chat(members_ids: str) -> bool:
 		db_connection.close()
 		print('Failed to create chat!', error)
 	return False
+
+
+def add_message_to_chat(chat_id: int, owner: int, message: str):
+	db_connection = sqlite3.connect(DB)
+	cursor = db_connection.cursor()
+	try:
+		cursor.execute('''SELECT number_of_messages FROM Chats WHERE chat_id == ?''', (chat_id, ))
+		number_of_messages = int(cursor.fetchone()[0])
+		cursor.execute('''SELECT messages FROM Chats WHERE chat_id == chat_id''')
+		messages = json.loads(cursor.fetchone()[0])
+		messages[str(number_of_messages + 1)] = {'owner': str(owner), 'message': message}
+		cursor.execute('''UPDATE Chats SET number_of_messages = ?, messages = ? WHERE chat_id == ?''', 
+				 (number_of_messages + 1, json.dumps(messages), chat_id, ))
+		db_connection.commit()
+		db_connection.close()
+	except Exception as error:
+		db_connection.close()
+		print('Failed to add message to chat!', error)
 
 
 def get_chats(user_id) -> list[int]:
@@ -384,6 +406,7 @@ def initialize_db():
 	CREATE TABLE IF NOT EXISTS Chats (
 	chat_id INTEGER PRIMARY KEY,
 	members_id TEXT,
+	number_of_messages INT,
 	messages TEXT
 	)
 	''')
