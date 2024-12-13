@@ -12,12 +12,8 @@ class Client:
 
     def get_response(self) -> bool:
         try:
-            print('here')
             message = self.client.recv(1024)
-            print(message)
-            print(message.decode())
             data = json.loads(message.decode())
-            print(data)
             print('Got data from server:', data)
             if data['value'] == 'ok':
                 return True
@@ -29,7 +25,7 @@ class Client:
         try:
             data = json.dumps(message).encode() 
             self.client.send(data)
-            print('Sent data to server')
+            print('Sent data to server', data)
         except Exception as error:
             print('Error while sending data to server!', error)
 
