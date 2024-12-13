@@ -1,10 +1,12 @@
-from tkinter import *
-
+from tkinter import messagebox
+from socket_client import *
+from constants import *
 
 
 class AbobaChatApp:
-    def __init__(self, root):
+    def __init__(self, root, client: Client):
         self.root = root
+        self.client = client
         self.root.title("Aboba chat)")
         self.root.geometry("500x500")
         self.root.resizable(width=False, height=False)
@@ -90,22 +92,25 @@ class AbobaChatApp:
 
     def Voyti(self):
         login = self.vveditelogin.get()
-        parol = self.vvediteparol.get()
-        if login != 'Enter the login' and parol != 'Enter the password' and login != '' and parol !='':#проверка на базу данных
-            root.withdraw() 
-            Anketa(self.root)
+        password = self.vvediteparol.get()
+        if login != 'Введите логин' and password != 'Введите пароль' and login != '' and password != '':#проверка на базу данных
+            message = {'key': 'LOGUSER', 'login': login, 'password': password}
+            self.client.transfer_data(message)
+            if self.client.get_response():
+                root.withdraw() 
+                Anketa(self.root, self.client)
         else:
             self.vveditedr.place(x=100, y=375, width=300, height=50)
 
     def clickReg(self):
         root.withdraw()
-        Registration(self.root)
-        
+        Registration(self.root, self.client)
 
 
 class Registration:
-    def __init__(self, parent):
+    def __init__(self, parent, client):
         self.parent = parent
+        self.client = client
         self.top=Toplevel(parent)
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
@@ -175,20 +180,20 @@ class Registration:
 
 
     def Cont(self):
-        login1 = self.pridumaytelogin.get()
-        parol1 = self.pridumayteparol.get()
-        parol2=self.povtoriteparol.get()
-
-        if login1 != 'Create the login' and parol1 != 'Create the password' and login1 !='' and parol1 !='' and parol1 == parol2:#проверка на повторную регистрацию
+        if login_1 != 'Придумайте логин' and password_1 != 'Придумайте пароль' and login_1 !='' and password_1 !='' and password_1 == password_2: #проверка на повторную регистрацию
+            if not 4 <= len(login_1) <= 16 and not 6 <= len(password_1) <= 20:
+                self.vveditedr.place(x=100, y=375, width=300, height=50)
+            message = {'key': 'REGUSER', 'login': login_1, 'password': password_1}
+            self.client.transfer_data(message)
             self.top.withdraw()
             Profil(self.parent)
-            print(login1,parol1) #занесение логина и пароля в БД
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
 
 class Profil:
-    def __init__(self, parent):
+    def __init__(self, parent, client):
         self.parent = parent
+        self.client = client
         self.top=Toplevel(parent)
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
@@ -275,14 +280,12 @@ class Profil:
             print(name,surname,gender,info)#занесение данных об анкете в БД
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
-        
 
-        
-
-
+   
 class Anketa:
-    def __init__(self, parent):
+    def __init__(self, parent, client):
         self.parent = parent
+        self.client = client
         self.top1=Toplevel(parent)
         self.top1.title("Aboba chat")
         self.top1.geometry("500x500")
@@ -625,11 +628,10 @@ class Change_inf_prof(Profil):
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
     
-
-
-
-
+    
 if __name__ == "__main__":
     root = Tk()
-    app = AbobaChatApp(root)
+    client = Client()
+    client.start_connection(HOSTNAME, PORT)
+    app = AbobaChatApp(root, client)
     root.mainloop()
