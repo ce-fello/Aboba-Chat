@@ -3,6 +3,12 @@ from constants import *
 
 
 def get_last_id():
+	"""
+	Function to get the biggest ID in table Users.
+
+	:returns: the biggest found index or zero if table doesn`t exists or an error has occured.
+	:rtype: int
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -27,6 +33,12 @@ def get_last_id():
 
 
 def get_last_chat_id():
+	"""
+	Function to get the biggest ID in table Chats.
+
+	:returns: the biggest found index or zero if table doesn`t exists or an error has occured.
+	:rtype: int
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -51,6 +63,12 @@ def get_last_chat_id():
 
 
 def delete_users_table():
+	"""
+	Function that deletes table Users.
+
+	:returns: deletes table.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -63,6 +81,12 @@ def delete_users_table():
 		
 
 def delete_chats_table():
+	"""
+	Function that deletes table Chats.
+
+	:returns: deletes table.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -75,6 +99,12 @@ def delete_chats_table():
 
 
 def delete_sessions_table():
+	"""
+	Function that deletes table Sessions.
+
+	:returns: deletes table.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -86,6 +116,12 @@ def delete_sessions_table():
 		print('Failed to delete table!', error)
 
 def print_sessions_table():
+	"""
+	Function that prints table Sessions content.
+
+	:returns: prints table content.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -100,6 +136,12 @@ def print_sessions_table():
 
 
 def print_chats_table():
+	"""
+	Function that prints table Chats content.
+
+	:returns: prints table content.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -114,6 +156,12 @@ def print_chats_table():
 
 
 def print_users_table():
+	"""
+	Function that prints table Users content.
+
+	:returns: prints table content.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -127,7 +175,15 @@ def print_users_table():
 		print('Failed to print table!', error)
 
 
-def get_form_of_user(user_id):
+def get_form_of_user(user_id) -> list[int]:
+	"""
+	Function that gets list of IDs of chats that user is member of by ID.
+
+	:param user_id: ID of user whose chats we are getting.
+	:type: int
+	:returns: list of IDs.
+	:rtype: list[int]
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -142,6 +198,14 @@ def get_form_of_user(user_id):
 
 
 def get_bio_of_user(user_id):
+	"""
+	Function that gets bio of user by ID.
+
+	:param user_id: ID of user whose bio we are getting.
+	:type: int
+	:returns: string of user`s bio.
+	:rtype: str
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -155,12 +219,28 @@ def get_bio_of_user(user_id):
 		print('Failed to get bio of user!', error)
 
 
-def update_user_form(user_id, new_bio):
+def update_user_info(user_id, surname, name, is_male, bio):
+	"""
+	Function that updates user`s information by given parameters.
+
+	:param user_id: id of user whose info we change.
+	:type: int
+	:param surname: surname of the user.
+	:type: str
+	:param surname: name of user.
+	:type: str
+	:param is_male: represents sex of user.
+	:type: bool
+	:bio: information about user.
+	:type: str
+	:returns: updates info in table Users
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
-		cursor.execute('''UPDATE Users SET bio = ? WHERE user_id == ?''',
-				 (new_bio, user_id, ))
+		cursor.execute('''UPDATE Users SET surname = ?, name = ?, is_male = ?, bio = ? WHERE user_id == ?''',
+				 (surname, name, is_male, bio, user_id, ))
 		db_connection.commit()
 		db_connection.close()
 	except Exception as error:
@@ -168,7 +248,15 @@ def update_user_form(user_id, new_bio):
 		print('Failed to update user`s bio!', error)
 
 
-def create_chat(members_ids: str):
+def create_chat(members_ids: str) -> bool:
+	"""
+	Function that creates chat and writes down IDs of its members.
+
+	:param members_ids: IDs of users who are members of chat.
+	:type: str
+	:returns: True if managed to create and False if didn`t.
+	:rtype: bool
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	LAST_CHAT_ID = get_last_chat_id()
@@ -189,6 +277,14 @@ def create_chat(members_ids: str):
 
 
 def get_chats(user_id) -> list[int]:
+	"""
+	Function that gets list of IDs of whose member is user.
+
+	:param user_id: ID of user.
+	:type: int
+	:returns: list of IDs.
+	:rtype: list[int]
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -205,7 +301,17 @@ def get_chats(user_id) -> list[int]:
 	return []
 
 
-def sign_user(login, password):
+def sign_user(login, password) -> bool:
+	"""
+	Function that authentiticate user with login and password.
+
+	:param login: login of user.
+	:type: str
+	:param password: password of user.
+	:type: str
+	:returns: True if authentiticated succesfully and False otherwise.
+	:rtype: bool
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -224,18 +330,28 @@ def sign_user(login, password):
 	return False
 
 
-def register_user(username, password, gender, bio):
+def register_user(username, password) -> bool:
+	"""
+	Function that registers user and writes down his login and password in db.
+
+	:param username: username/login of user.
+	:type: str
+	:param password: password of user.
+	:type: str
+	:returns: True if registered succesfully and False otherwise.
+	:rtype: bool
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	LAST_ID = get_last_id()
 	try:
 		cursor.execute('''
-		INSERT INTO Users (user_id, username, password, gender, bio, form) VALUES (?, ?, ?, ?, ?, ?)
-		''', (LAST_ID + 1, username, password, gender, bio, None, ))
+		INSERT INTO Users (user_id, username, password, surname, name, is_male, bio) VALUES (?, ?, ?, ?, ?, ?, ?)
+		''', (LAST_ID + 1, username, password, '', '', '', '', ))
 		db_connection.commit()
 		db_connection.close()
 		increment_last_id()
-		print('Registered user', username, password, gender, bio)
+		print('Registered user', username, password)
 		return True
 	except Exception as error:
 		db_connection.close()
@@ -244,6 +360,12 @@ def register_user(username, password, gender, bio):
 
 
 def initialize_db():
+	"""
+	Function that creates tables Users, Chats and Sessions.
+
+	:returns: creates tables.
+	:rtype: void
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	cursor.execute('''
@@ -251,9 +373,10 @@ def initialize_db():
 	user_id INTEGER PRIMARY KEY,
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	gender TEXT,
-	bio TEXT,
-	form TEXT
+	name TEXT,
+	surname TEXT,
+	is_male BOOL,
+	bio TEXT
 	)
 	''')
 	db_connection.commit()
@@ -281,15 +404,28 @@ def initialize_db():
 # [{	
 # 	'message_id': 'message_id',
 # 	'owner': 'user_id',
-# 	'time': 'time',
 # 	'message': 'text'
 # }, 
 # {
 # 	'message_id': 'message_id',
 # 	'owner': 'user_id',
-# 	'time': 'time',
 # 	'message': 'text'
 # },
 # ...
 # ] -> json.dumps()
 # chat_messages
+	# {
+	# 	'messages' : {
+	# 		'message_id': {
+	# 			'owner': 'user_id',
+	# 			'message': 'text'
+	# 		}
+	# 	},
+	# 	{ 'message_id': {
+	# 		'owner': 'user_id',
+	# 		'message': 'text'
+	# 	},
+	#	...
+	# }
+	# 
+	
