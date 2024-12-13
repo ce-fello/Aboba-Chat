@@ -310,7 +310,7 @@ class Anketa:
 
         self.btn_exit=Button(self.top1,
                     text='Log out',
-                    #command=#self.start_search,
+                    command=self.log_out,
                     font=('Comic Sans MS', 10, 'bold'),
                     fg='black',
                     bg='pink',
@@ -394,7 +394,14 @@ class Anketa:
                           font=('Comic Sans MS', 10, 'bold'),
                           bg='purple',
                           fg='white')
-        
+    def back_to_AbobaChatApp(self):
+        self.top1.destroy()
+        self.parent.deiconify()
+    
+    def log_out(self):
+        self.top1.withdraw()
+        self.back_to_AbobaChatApp()
+
         
     def start_search(self):#подтягивание данных из БД
         self.name.config(text = 'имя другого человека из БД' )
@@ -445,14 +452,14 @@ class Anketa:
         self.btn_come_back=Button(self.top2,
                     text='Come back',
                     command=self.come_back,
-                    font=('Comic Sans MS', 14, 'bold'),
-                    fg='white',
+                    font=('Comic Sans MS', 10, 'bold'),
+                    fg='black',
                     bg='pink',
                     width=10,
                     height=10,
                     activebackground='pink',
                     activeforeground='blue')
-        self.btn_come_back.place(x=400, y=100, width=70, height=40)
+        self.btn_come_back.place(x=400, y=100, width=80, height=40)
         
         
 
