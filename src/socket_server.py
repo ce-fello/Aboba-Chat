@@ -30,6 +30,9 @@ class Server:
 		server.listen(number_of_connections)
 		initialize_db()
 		print_users_table()
+		print_chats_table()
+		get_chats(1)
+		get_chats(3)
 		while True:
 			try:
 				connection, address = server.accept()
@@ -60,6 +63,8 @@ def process_data(server: Server, connection, data: dict):
 			server.send_response(connection, register_user(data['login'], data['password'], data['gender'], data['bio']))
 		case 'LOGUSER':
 			server.send_response(connection, sign_user(data['login'], data['password']))
+		case 'CRTCHAT':
+			server.send_response(connection, create_chat(data['members_id']))
 
 
 def client_thread(server, connection):
