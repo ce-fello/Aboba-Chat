@@ -1,3 +1,4 @@
+from tkinter import *
 from tkinter import messagebox
 from socket_client import *
 from constants import *
@@ -15,7 +16,6 @@ class AbobaChatApp:
         self.setup_ui()
 
     def setup_ui(self):
-
         self.btnVhod = Button(self.root,
                               text='Sign in',
                               command=self.clickVhod,
@@ -175,11 +175,10 @@ class Registration:
             self.povtoriteparol.delete(0, END)
 
     
-
-    
-
-
     def Cont(self):
+        login_1 = self.pridumaytelogin.get()
+        password_1 = self.pridumayteparol.get()
+        password_2 = self.povtoriteparol.get()
         if login_1 != 'Придумайте логин' and password_1 != 'Придумайте пароль' and login_1 !='' and password_1 !='' and password_1 == password_2: #проверка на повторную регистрацию
             if not 4 <= len(login_1) <= 16 and not 6 <= len(password_1) <= 20:
                 self.vveditedr.place(x=100, y=375, width=300, height=50)
@@ -623,7 +622,7 @@ class Change_inf_prof(Profil):
             gender=self.choice.get()#male=0  female=1
             info=self.info.get(1.0,END)
             self.top.withdraw()
-            Anketa(self.parent)
+            Anketa(self.parent, self.client)
             print(name,surname,gender,info)#занесение данных об анкете в БД
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)

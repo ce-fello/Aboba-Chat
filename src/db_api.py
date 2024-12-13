@@ -198,7 +198,18 @@ def print_users_table():
 # 		print('Failed to get form of user!', error)
 
 
-# def get_id_by_user()
+def get_id_by_login(login: str):
+	db_connection = sqlite3.connect(DB)
+	cursor = db_connection.cursor()
+	try:
+		cursor.execute('''SELECT * FROM Users WHERE username == ?''', 
+				 (login, ))
+		result = cursor.fetchone()[0]
+		db_connection.close()
+		return result
+	except Exception as error:
+		db_connection.close()
+		print('Failed to get bio of user!', error)
 
 
 def get_bio_of_user(user_id):

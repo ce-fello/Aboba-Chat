@@ -72,6 +72,7 @@ class Server:
 		initialize_db()
 		print_users_table()
 		print_chats_table()
+		print(get_id_by_login('billyh'))
 		while True:
 			try:
 				connection, address = server.accept()
