@@ -1,8 +1,8 @@
-import socket
 import json
+import socket
+from db_api import *
 from _thread import *
 from constants import *
-from db_api import *
 
 
 class Server:
@@ -47,7 +47,17 @@ class Server:
 		except Exception as error:
 			print('Failed to send ok response to client', connection, error)
 
-	def send_message(self, connection, message):
+	def send_message(self, connection, message: str):
+		"""
+		Function that sends message to socket.
+
+		:param connection: socket to which we send message.
+		:type connection: socket
+		:param message: message that we send to socket.
+		:type message: str
+		:returns: sends data to socket.
+		:rtype: void
+		"""
 		data = json.dumps(message).encode()
 		print(data)
 		try:
@@ -106,7 +116,7 @@ def process_data(server: Server, connection: socket, data: dict):
 		case 'LOGUSER':
 			server.send_response(connection, sign_user(data['login'], data['password']))
 		case 'CRTCHAT':
-			server.send_response(connection, create_chat(data['members_id']))
+			create_chat(data['members_id'])
 		case 'ADDMSG':
 			add_message_to_chat(data['chat_id'], data['owner_id'], data['message'])
 		case 'GETCHATS':
@@ -114,7 +124,13 @@ def process_data(server: Server, connection: socket, data: dict):
 		case 'UPDUSERINFO':
 			update_user_info(data['user_id'], data['surname'], data['name'], data['is_male'], data['bio'])
 		case 'GETBIO':
-			server.send_message(connection, get_bio_of_user(data['user_id']))
+			server.send_message(connection, get_info_of_user(data['user_id']))
+		case 'GETID':
+			server.send_message(connection, get_id_by_login(data['login']))
+		case 'GETLAST':
+			server.send_message(connection, get_last_id())
+		case 'GETCHTMB':
+			server.send_message(connection, get_chat_id_by_members(data['member_id_1'], data['member_id_2']))
 
 
 def client_thread(server: Server, connection: socket):

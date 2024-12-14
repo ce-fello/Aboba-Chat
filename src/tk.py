@@ -1,3 +1,4 @@
+import random
 from tkinter import *
 from tkinter import messagebox
 from socket_client import *
@@ -9,6 +10,7 @@ class AbobaChatApp:
         self.user_id=-1
         self.root = root
         self.client = client
+        self.id = -1
         self.root.title("Aboba chat)")
         self.root.geometry("500x500")
         self.root.resizable(width=False, height=False)
@@ -16,7 +18,6 @@ class AbobaChatApp:
         self.setup_ui()
 
     def setup_ui(self):
-
         self.btnVhod = Button(self.root,
                               text='Sign in',
                               command=self.clickVhod,
@@ -94,27 +95,27 @@ class AbobaChatApp:
     def Voyti(self):
         login = self.vveditelogin.get()
         password = self.vvediteparol.get()
-        if login != 'Введите логин' and password != 'Введите пароль' and login != '' and password != '':  # проверка на базу данных
+        if login != 'Введите логин' and password != 'Введите пароль' and login != '' and password != '':
             message = {'key': 'LOGUSER', 'login': login, 'password': password}
             self.client.transfer_data(message)
             if self.client.get_response():
                 self.client.transfer_data({'key': 'GETID', 'login': login})
-                id = self.client.get_data()
-                print(id)
-                root.withdraw()
-                Anketa(self.root, self.client, id)
+                self.id = self.client.get_data()
+                root.withdraw() 
+                Anketa(self.root, self.client, self.id)
         else:
             self.vveditedr.place(x=100, y=375, width=300, height=50)
 
     def clickReg(self):
         root.withdraw()
-        Registration(self.root, self.client)
+        Registration(self.root, self.client, self.id)
 
 
 class Registration:
-    def __init__(self, parent, client):
+    def __init__(self, parent, client: Client, id):
         self.parent = parent
         self.client = client
+        self.id = id
         self.top = Toplevel(parent)
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
@@ -181,30 +182,31 @@ class Registration:
         login_1 = self.pridumaytelogin.get()
         password_1 = self.pridumayteparol.get()
         password_2 = self.povtoriteparol.get()
-
-        if login_1 != 'Придумайте логин' and password_1 != 'Придумайте пароль' and login_1 != '' and password_1 != '' and password_1 == password_2:  # проверка на повторную регистрацию
+        if login_1 != 'Придумайте логин' and password_1 != 'Придумайте пароль' and \
+            login_1 != '' and password_1 != '' and password_1 == password_2:
             if not 4 <= len(login_1) <= 16 and not 6 <= len(password_1) <= 20:
                 self.vveditedr.place(x=100, y=375, width=300, height=50)
             message = {'key': 'REGUSER', 'login': login_1, 'password': password_1}
             self.client.transfer_data(message)
-            self.top.withdraw()
-            Profil(self.parent, client, id)
+            if self.client.get_response():
+                self.top.withdraw()
+                Profil(self.parent, self.client, self.id)
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
 
 
 class Profil:
-    def __init__(self, parent, client, id):
-        self.user_id = id
+    def __init__(self, parent, client: Client, id):
         self.parent = parent
         self.client = client
+        self.id = id
         self.top = Toplevel(parent)
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
         self.top.resizable(width=False, height=False)
         self.top.config(bg='purple')
         self.choice = IntVar(value=0)
-        self.setup_ui()
+        self.setup_ui()    
 
     def setup_ui(self):
         self.name = Entry(self.top)
@@ -266,111 +268,112 @@ class Profil:
 
     def back_to_AbobaChatApp(self):
         self.top.destroy()
-        self.parent.deiconify()
+        self.parent.deiconify()  
 
-    def cont(self, id):
-        if self.name.get() != '' and self.name.get() != 'Enter your name' and self.surname.get() != '' and self.surname.get() != 'Enter your surname':
-            name = self.name.get()
+    def cont(self):
+        if self.name.get() != '' and self.name.get() != 'Enter your name' and \
+        self.surname.get() != '' and self.surname.get() != 'Enter your surname':
+            name = self.name.get() 
             surname = self.surname.get()
-            gender = self.choice.get()  # male=0  female=1
+            gender = self.choice.get() # male = 0 female = 1
             info = self.info.get(1.0, END)
-            self.client.send_message({'key': 'UPDUSERINFO', 'user_id': id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info})
-            from_server = self.client.get_data()
-            if self.client.get_response():
-                self.top.withdraw()
-                self.back_to_AbobaChatApp()
+            self.top.withdraw()
+            self.back_to_AbobaChatApp()
+            message = {'key': 'UPDUSERINFO', 'user_id': self.id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info}
+            self.client.transfer_data(message)
+            print(name, surname, gender, info)
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
 
 
 class Anketa:
-    def __init__(self, parent, client, id):
-        self.id = id
+    def __init__(self, parent, client: Client, id):
         self.parent = parent
         self.client = client
+        self.id = id
         self.top1 = Toplevel(parent)
         self.top1.title("Aboba chat")
         self.top1.geometry("500x500")
-        self.top1.resizable(width=False, height=False)
-        self.top1.config(bg='purple')
+        self.top1.resizable(width=False, height=False) 
+        self.top1.config(bg='purple') 
         self.setup_ui()
 
     def setup_ui(self):
         self.btn_edit_prof = Button(self.top1,
-                                    text='Update profile',
-                                    command=self.open_edit_profil,
-                                    font=('Comic Sans MS', 10, 'bold'),
-                                    fg='black',
-                                    bg='pink',
-                                    width=10,
-                                    height=10,
-                                    activebackground='pink',
-                                    activeforeground='blue')
-
-        self.btn_edit_prof.place(x=20, y=10, width=100, height=30)
+                            text='Update profile',
+                            command=self.open_edit_profil,
+                            font=('Comic Sans MS', 10, 'bold'),
+                            fg='black',
+                            bg='pink',
+                            width=10,
+                            height=10,
+                            activebackground='pink',
+                            activeforeground='blue')
+            
+        self.btn_edit_prof.place(x=20,y=10,width=100,height=30)
 
         self.btn_exit = Button(self.top1,
-                               text='Log out',
-                               command=self.log_out,
-                               font=('Comic Sans MS', 10, 'bold'),
-                               fg='black',
-                               bg='pink',
-                               width=10,
-                               height=10,
-                               activebackground='pink',
-                               activeforeground='blue')
-        self.btn_exit.place(x=20, y=110, width=100, height=30)
+                    text='Log out',
+                    command=self.log_out,
+                    font=('Comic Sans MS', 10, 'bold'),
+                    fg='black',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+        self.btn_exit.place(x=20,y=110,width=100,height=30)
 
         self.btnChats = Button(self.top1,
-                               command=self.open_chats,
-                               text='Open chats',
-                               font=('Comic Sans MS', 10, 'bold'),
-                               bg='pink',
-                               fg='black',
-                               activebackground='pink',
-                               activeforeground='blue')
-        self.btnChats.place(x=20, y=60, width=100, height=30)
+                            command=self.open_chats,
+                            text='Open chats',
+                            font=('Comic Sans MS', 10, 'bold'),
+                            bg='pink',
+                            fg='black',
+                            activebackground='pink',
+                            activeforeground='blue')
+        self.btnChats.place(x=20,y=60,width=100,height=30)
 
         self.btn_start_search = Button(self.top1,
-                                       text='Start search',
-                                       command=self.start_search,
-                                       font=('Comic Sans MS', 14, 'bold'),
-                                       fg='white',
-                                       bg='pink',
-                                       width=10,
-                                       height=10,
-                                       activebackground='pink',
-                                       activeforeground='blue')
+                    text='Start search',
+                    command=self.start_search,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
         self.btn_start_search.place(x=175, y=230, width=150, height=40)
 
         self.btnlike = Button(self.top1,
-                              text='Like',
-                              command=self.like,
-                              font=('Comic Sans MS', 14, 'bold'),
-                              fg='white',
-                              bg='pink',
-                              width=10,
-                              height=10,
-                              activebackground='pink',
-                              activeforeground='blue')
-
+                    text='Like',
+                    command=self.like,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+    
         self.btndislike = Button(self.top1,
-                                 text='Dislike',
-                                 command=self.dislike,
-                                 font=('Comic Sans MS', 14, 'bold'),
-                                 fg='white',
-                                 bg='pink',
-                                 width=10,
-                                 height=10,
-                                 activebackground='pink',
-                                 activeforeground='blue')
-
+                    text='Dislike',
+                    command=self.dislike,
+                    font=('Comic Sans MS', 14, 'bold'),
+                    fg='white',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
+      
         self.name = Label(self.top1,
                           text='Name',
                           font=('Comic Sans MS', 10, 'bold'),
                           bg='purple',
                           fg='white')
-
+        
         self.surname = Label(self.top1,
                              text='Surname',
                              font=('Comic Sans MS', 10, 'bold'),
@@ -389,6 +392,7 @@ class Anketa:
                           bg='purple',
                           fg='white')
 
+        
     def back_to_AbobaChatApp(self):
         self.top1.destroy()
         self.parent.deiconify()
@@ -397,11 +401,23 @@ class Anketa:
         self.top1.withdraw()
         self.back_to_AbobaChatApp()
 
-    def start_search(self):  # подтягивание данных из БД
-        self.name.config(text='имя другого человека из БД')
-        self.surname.config(text='фамилия другого человека из БД')
-        self.gender.config(text='пол')
-        self.info.config(text='информация')
+    def start_search(self):
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
         self.name.place(x=150, y=50, width=200, height=40)
         self.surname.place(x=150, y=100, width=200, height=40)
         self.gender.place(x=150, y=150, width=200, height=20)
@@ -410,48 +426,75 @@ class Anketa:
         self.btnlike.place(x=100, y=420, width=100, height=40)
         self.btndislike.place(x=300, y=420, width=100, height=40)
 
-    def like(self):  # Занесение данных в БД
-        self.name.config(text='имя другого человека из БД лайк')
-        self.surname.config(text='фамилия другого человека из БД лайк')
-        self.gender.config(text='пол лайк')
-        self.info.config(text='информация лайк')
+    def like(self):
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
+        message = {'key': 'CRTCHAT', 'members_id': str(self.id) + ',' + str(id)}
+        self.client.transfer_data(message)
+        Chat(self.parent, self.client, self.id, id)
         self.add_button()
-
+        
     def dislike(self):
-        self.name.config(text='имя другого человека из БД диз лайк')
-        self.surname.config(text='фамилия другого человека из БД дизлайк')
-        self.gender.config(text='пол дизлайк')
-        self.info.config(text='информация дизлайк')
-
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
+    
     def come_back(self):
         self.top2.withdraw()
-        Anketa(self.parent, client, id)
-
+        
     def open_chats(self):
-        # self.top1.withdraw()
+        message = {'key': 'GETCHATS', 'user_id': self.id}
+        self.client.transfer_data(message)
+        self.button_count = self.client.get_data()
         self.top2 = Toplevel()
         self.top2.title("Aboba chat")
         self.top2.geometry("500x500")
-        self.top2.resizable(width=False, height=False)
+        self.top2.resizable(width=False, height=False) 
         self.top2.config(bg='purple')
         self.canvas = Canvas(self.top2)
         self.canvas.config(bg='purple', highlightbackground='purple')
         self.scrollbar = Scrollbar(self.top2, orient="vertical", command=self.canvas.yview)
-        self.scrollable_frame = Frame(self.canvas, bg='purple')
+        self.scrollable_frame = Frame(self.canvas,bg='purple')
 
         self.btn_come_back = Button(self.top2,
-                                    text='Come back',
-                                    command=self.come_back,
-                                    font=('Comic Sans MS', 10, 'bold'),
-                                    fg='black',
-                                    bg='pink',
-                                    width=10,
-                                    height=10,
-                                    activebackground='pink',
-                                    activeforeground='blue')
+                    text='Come back',
+                    command=self.come_back,
+                    font=('Comic Sans MS', 10, 'bold'),
+                    fg='black',
+                    bg='pink',
+                    width=10,
+                    height=10,
+                    activebackground='pink',
+                    activeforeground='blue')
         self.btn_come_back.place(x=400, y=100, width=80, height=40)
-
-        # Настройка канваса
+        
         self.scrollable_frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(
@@ -468,15 +511,15 @@ class Anketa:
         self.scrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
 
-        # Изначально создаем несколько кнопок
-        self.button_count = 0
-
     def open_edit_profil(self):
         self.top1.withdraw()
-        Change_inf_prof(self.parent, client, id)
+        Change_inf_prof(self.parent, self.client, self.id)
 
-    def open_ch(self):
-        Chat(self.parent)
+        # Кнопка для добавления новой кнопки
+        #add_button = Button(self.top2, text="Добавить кнопку", command=self.add_button)
+        #add_button.pack(pady=10)
+    def open_ch(self, id_partner):
+        Chat(self.parent, self.client, self.id, id_partner)
 
     def add_button(self):
         """Добавляет новую кнопку в прокручиваемый список."""
@@ -489,16 +532,23 @@ class Anketa:
 
 
 class Chat:
-    def __init__(self, parent):
+    def __init__(self, parent, client: Client, id_client, id_partner):
         self.parent = parent
+        self.client = client
+        self.id = id_client
+        self.id_partner = id_partner
+        self.chat_id = -1
         self.top3 = Toplevel(parent)
         self.top3.title("Aboba chat")
-        self.top3.resizable(width=False, height=False)
+        self.top3.resizable(width=False, height=False) 
         self.setup_ui()
 
     def setup_ui(self):
-        self.label1 = Label(self.top3, bg="pink", fg="black", text="Welcome", font="Helvetica 13 bold", pady=10,
-                            width=20, height=1)
+        message = {'key': 'GETCHTMB', 'member_id_1': str(self.id), 'member_id_2': str(self.id_partner)}
+        self.client.transfer_data(message)
+        self.chat_id = self.client.get_data() 
+        print(self.chat_id, 'IN SETUP')
+        self.label1 = Label(self.top3, bg="pink", fg="black", text="Welcome", font="Helvetica 13 bold", pady=10, width=20, height=1)
         self.label1.grid(row=0)
 
         self.txt = Text(self.top3, bg="pink", fg="black", font="Helvetica 14", width=60)
@@ -518,25 +568,29 @@ class Chat:
         self.send_button.grid(row=2, column=1)
 
     def send(self):
-        message = "You -> " + self.e.get()
+        message = self.e.get()
+        print(message)
+        message_to_server = {'key': 'ADDMSG', 'chat_id': self.chat_id, 'owner_id': self.id, 'message': message}
+        print(message_to_server)
+        self.client.transfer_data(message_to_server)        
         self.txt.insert(END, "\n" + message)
         self.e.delete(0, END)
 
 
-class Change_inf_prof():
-    def __init__(self, parent, client, id):
-        self.user_id = id
+class Change_inf_prof(Profil):
+    def __init__(self, parent, client: Client, id):
         self.parent = parent
         self.client = client
+        self.id = id
         self.top = Toplevel(parent)
         self.top.title("Aboba chat")
         self.top.geometry("500x500")
         self.top.resizable(width=False, height=False)
         self.top.config(bg='purple')
         self.choice = IntVar(value=0)
-        self.setup_ui()
+        self.setup_ui(self.cont)    
 
-    def setup_ui(self):
+    def setup_ui(self, func):
         self.name = Entry(self.top)
         self.surname = Entry(self.top)
 
@@ -552,11 +606,11 @@ class Change_inf_prof():
         Radiobutton(self.top, text='female', variable=self.choice, value=1).place(x=150, y=210, width=70, height=30)
 
         self.lbl = Label(self.top,
-                         text='Write about yourself',
-                         font=('Comic Sans MS', 12, 'bold'),
-                         bg='purple',
-                         fg='white')
-        self.lbl.place(y=245, x=60, width=200, height=30)
+                          text='Write about yourself',
+                          font=('Comic Sans MS', 12, 'bold'),
+                          bg='purple',
+                          fg='white')
+        self.lbl.place(y=245, x=60, width= 200, height =30)
 
         self.lbl1 = Label(self.top,
                           text='Please, tell about yourself',
@@ -566,7 +620,7 @@ class Change_inf_prof():
         self.lbl1.place(y=30, x=60, width=300, height=50)
 
         self.info = Text(self.top)
-        self.info.place(y=270, x=70, width=360, height=100)
+        self.info.place(y=270, x=70, width= 360, height =100)
 
         self.btnregprof = Button(self.top,
                                  text='Continue',
@@ -594,17 +648,18 @@ class Change_inf_prof():
         if self.surname.get() == 'Enter your surname':
             self.surname.delete(0, END)
 
-    def cont(self, id):
-        if self.name.get() != '' and self.name.get() != 'Enter your name' and self.surname.get() != '' and self.surname.get() != 'Enter your surname':
-            name = self.name.get()
+    def cont(self):
+        if self.name.get() != '' and self.name.get() != 'Enter your name' and \
+            self.surname.get() != '' and self.surname.get() != 'Enter your surname':
+            name = self.name.get() 
             surname = self.surname.get()
-            gender = self.choice.get()  # male=0  female=1
+            gender = self.choice.get() # male = 1  female = 0
             info = self.info.get(1.0, END)
-            self.client.send_message({'key': 'UPDUSERINFO', 'user_id': id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info})
-            from_server = self.client.get_data()
-            if self.client.get_response():
-                self.top.withdraw()
-                Anketa(self.parent, client, id)
+            self.top.withdraw()
+            Anketa(self.parent, self.client, self.id)
+            message = {'key': 'UPDUSERINFO', 'user_id': self.id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info}
+            self.client.transfer_data(message)
+            print(name,surname,gender,info)
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)
 

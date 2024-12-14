@@ -1,8 +1,9 @@
-HOSTNAME = 'localhost'
-PORT = 6000
+HOSTNAME = 'localhost' 
+PORT = 27312
 DB = 'my_database.db'
 LAST_ID = 0
 LAST_CHAT_ID = 0
+
 
 def increment_last_id():
     """
@@ -10,6 +11,7 @@ def increment_last_id():
     """
     global LAST_ID
     LAST_ID += 1
+
 
 def increment_last_chat_id():
     """
