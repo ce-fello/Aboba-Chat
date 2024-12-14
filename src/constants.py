@@ -1,5 +1,5 @@
 HOSTNAME = 'localhost' 
-PORT = 27012
+PORT = 27312
 DB = 'my_database.db'
 LAST_ID = 0
 LAST_CHAT_ID = 0

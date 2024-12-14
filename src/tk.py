@@ -379,7 +379,6 @@ class Anketa:
                           bg='purple',
                           fg='white')
         
-
         self.gender = Label(self.top1,
                           text='Gender',
                           font=('Comic Sans MS', 10, 'bold'),
@@ -444,7 +443,8 @@ class Anketa:
         self.info.config(text = result[6])
         message = {'key': 'CRTCHAT', 'members_id': str(self.id) + ',' + str(id)}
         self.client.transfer_data(message)
-        self.add_button()
+        Chat(self.parent, self.client, self.id, id)
+        # self.add_button()
         
     def dislike(self):
         message = {'key': 'GETLAST'}
@@ -545,6 +545,7 @@ class Chat:
         message = {'key': 'GETCHTMB', 'member_id_1': str(self.id), 'member_id_2': str(self.id_partner)}
         self.client.transfer_data(message)
         self.chat_id = self.client.get_data() 
+        print(self.chat_id, 'IN SETUP')
         self.label1 = Label(self.top3, bg="pink", fg="black", text="Welcome", font="Helvetica 13 bold", pady=10, width=20, height=1)
         self.label1.grid(row=0)
 
@@ -567,7 +568,8 @@ class Chat:
     def send(self):
         message = self.e.get()
         print(message)
-        message_to_server = {'key': 'ADDMSG', 'owner_id': self.id, 'message': message}
+        message_to_server = {'key': 'ADDMSG', 'chat_id': self.chat_id, 'owner_id': self.id, 'message': message}
+        print(message_to_server)
         self.client.transfer_data(message_to_server)        
         self.txt.insert(END, "\n" + message)
         self.e.delete(0, END)

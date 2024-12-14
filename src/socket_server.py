@@ -116,7 +116,7 @@ def process_data(server: Server, connection: socket, data: dict):
 		case 'LOGUSER':
 			server.send_response(connection, sign_user(data['login'], data['password']))
 		case 'CRTCHAT':
-			server.send_response(connection, create_chat(data['members_id']))
+			create_chat(data['members_id'])
 		case 'ADDMSG':
 			add_message_to_chat(data['chat_id'], data['owner_id'], data['message'])
 		case 'GETCHATS':

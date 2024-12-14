@@ -200,13 +200,14 @@ def get_id_by_login(login: str):
 	return -1
 
 
-def get_chat_id_by_members(member_id_1, member_id_2) -> int:
+def get_chat_id_by_members(member_id_1: str, member_id_2: str) -> int:
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
-		cursor.execute('''SELECT chat_id FROM Chats WHERE members_id LIKE ? AND members_id LISE ?''', 
-				 (member_id_1, member_id_2, ))
+		cursor.execute('''SELECT chat_id FROM Chats WHERE members_id LIKE ? AND members_id LIKE ?''', 
+				 ('%' + member_id_1 + '%', '%' + member_id_2 + '%', ))
 		result = int(cursor.fetchone()[0])
+		print(result, 'CHAT ID BY MEMBERS')
 		db_connection.close()
 		return result
 	except Exception as error:
