@@ -7,7 +7,8 @@ class TestRegistration(unittest.TestCase):
     def setUp(self):
         self.parent = Tk()
         self.client = None  
-        self.registration = Registration(self.parent, self.client)
+        self.id = None
+        self.registration = Registration(self.parent, self.client, self.id)
 
     def tearDown(self):
         self.parent.destroy()
@@ -35,7 +36,8 @@ class TestProfil(unittest.TestCase):
     def setUp(self):
         self.parent = Tk()
         self.client = None
-        self.profil = Profil(self.parent, self.client)
+        self.id = None
+        self.profil = Profil(self.parent, self.client, self.id)
         self.profil.name = MagicMock(spec=Entry)
         self.profil.surname = MagicMock(spec=Entry)
         self.profil.choice = MagicMock(spec=IntVar)
@@ -71,11 +73,11 @@ class TestProfil(unittest.TestCase):
 
 class TestAnketa(unittest.TestCase):
     def test_anketa_creation(self):
-        anketa = Anketa(None, None)
+        anketa = Anketa(None, None, None)
         self.assertIsNotNone(anketa) 
 
     def test_anketa_attributes(self):
-        anketa = Anketa(None, None)
+        anketa = Anketa(None, None, None)
         self.assertIsNotNone(anketa.top1)
         self.assertIsNotNone(anketa.btn_start_search)
         self.assertIsNotNone(anketa.btnlike)
@@ -85,7 +87,7 @@ class TestAnketa(unittest.TestCase):
         self.assertIsNotNone(anketa.gender)
 
     def test_button_attributes(self):
-        anketa = Anketa(None, None)
+        anketa = Anketa(None, None, None)
         self.assertEqual(anketa.btn_start_search["text"], "Start search") 
 
 
