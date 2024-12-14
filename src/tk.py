@@ -1,3 +1,4 @@
+import random
 from tkinter import *
 from tkinter import messagebox
 from socket_client import *
@@ -277,7 +278,7 @@ class Profil:
             info = self.info.get(1.0, END)
             self.top.withdraw()
             self.back_to_AbobaChatApp()
-            message = {'key': 'UPDUSERINFO', 'surname': surname, 'name': name, 'is_male': gender, 'bio': info}
+            message = {'key': 'UPDUSERINFO', 'user_id': self.id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info}
             self.client.transfer_data(message)
             print(name, surname, gender, info)
         else:
@@ -399,11 +400,23 @@ class Anketa:
         self.top1.withdraw()
         self.back_to_AbobaChatApp()
         
-    def start_search(self):#подтягивание данных из БД
-        self.name.config(text = 'имя другого человека из БД' )
-        self.surname.config(text = 'фамилия другого человека из БД')
-        self.gender.config(text = 'пол')
-        self.info.config(text='информация')
+    def start_search(self):
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
         self.name.place(x=150, y=50, width=200, height=40)
         self.surname.place(x=150, y=100, width=200, height=40)
         self.gender.place(x=150, y=150, width=200, height=20)
@@ -412,37 +425,63 @@ class Anketa:
         self.btnlike.place(x=100, y=420, width=100, height=40)
         self.btndislike.place(x=300, y=420, width=100, height=40)
     
-    def like(self):#Занесение данных в БД
-        self.name.config(text = 'имя другого человека из БД лайк')
-        self.surname.config(text = 'фамилия другого человека из БД лайк')
-        self.gender.config(text = 'пол лайк')
-        self.info.config(text='информация лайк')
+    def like(self):
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
+        message = {'key': 'CRTCHAT', 'members_id': str(self.id) + ',' + str(id)}
+        self.client.transfer_data(message)
         self.add_button()
         
     def dislike(self):
-        self.name.config(text = 'имя другого человека из БД диз лайк')
-        self.surname.config(text = 'фамилия другого человека из БД дизлайк')
-        self.gender.config(text = 'пол дизлайк')
-        self.info.config(text='информация дизлайк')
+        message = {'key': 'GETLAST'}
+        self.client.transfer_data(message)
+        last_id = self.client.get_data()
+        id = self.id
+        while id == self.id:
+            id = random.randint(1, last_id)
+        message_bio = {'key': 'GETBIO', 'user_id': id}
+        self.client.transfer_data(message_bio)
+        result = self.client.get_data()
+        self.name.config(text = result[4] )
+        self.surname.config(text = result[3])
+        if result[5]:
+            self.gender.config(text = 'Male')
+        else:
+            self.gender.config(text = 'Female')
+        self.info.config(text = result[6])
     
     def come_back(self):
         self.top2.withdraw()
-        #Anketa(self.parent)
         
     def open_chats(self):
-        #self.top1.withdraw()
-        self.top2=Toplevel()
+        message = {'key': 'GETCHATS', 'user_id': self.id}
+        self.client.transfer_data(message)
+        self.button_count = self.client.get_data()
+        self.top2 = Toplevel()
         self.top2.title("Aboba chat")
         self.top2.geometry("500x500")
         self.top2.resizable(width=False, height=False) 
-        #self.top1.iconbitmap("../resources/logo.ico")
         self.top2.config(bg='purple')
         self.canvas = Canvas(self.top2)
         self.canvas.config(bg='purple',highlightbackground='purple')
         self.scrollbar = Scrollbar(self.top2, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = Frame(self.canvas,bg='purple')
 
-        self.btn_come_back=Button(self.top2,
+        self.btn_come_back = Button(self.top2,
                     text='Come back',
                     command=self.come_back,
                     font=('Comic Sans MS', 10, 'bold'),
@@ -454,7 +493,6 @@ class Anketa:
                     activeforeground='blue')
         self.btn_come_back.place(x=400, y=100, width=80, height=40)
         
-        # Настройка канваса
         self.scrollable_frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(
@@ -471,20 +509,15 @@ class Anketa:
         self.scrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
 
-        # Изначально создаем несколько кнопок
-        self.button_count = 0
-
     def open_edit_profil(self):
         self.top1.withdraw()
-        Change_inf_prof(self.parent)
+        Change_inf_prof(self.parent, self.client, self.id)
 
         # Кнопка для добавления новой кнопки
         #add_button = Button(self.top2, text="Добавить кнопку", command=self.add_button)
         #add_button.pack(pady=10)
-    def open_ch(self):
-        Chat(self.parent)
-
-    
+    def open_ch(self, id_partner):
+        Chat(self.parent, self.client, self.id, id_partner)
 
     def add_button(self):
         """Добавляет новую кнопку в прокручиваемый список."""
@@ -493,20 +526,25 @@ class Anketa:
                         activebackground='pink',
                         activeforeground='blue', 
                         command=self.open_ch)
-        button.pack(padx=50,pady=5,ipadx=100,ipady=15)  # Отступы между кнопками
+        button.pack(padx=50, pady=5, ipadx=100, ipady=15)  # Отступы между кнопками
  
 
 class Chat:
-    def __init__(self, parent, client: Client, id):
+    def __init__(self, parent, client: Client, id_client, id_partner):
         self.parent = parent
         self.client = client
-        self.id = id
+        self.id = id_client
+        self.id_partner = id_partner
+        self.chat_id = -1
         self.top3 = Toplevel(parent)
         self.top3.title("Aboba chat")
         self.top3.resizable(width=False, height=False) 
         self.setup_ui()
 
     def setup_ui(self):
+        message = {'key': 'GETCHTMB', 'member_id_1': str(self.id), 'member_id_2': str(self.id_partner)}
+        self.client.transfer_data(message)
+        self.chat_id = self.client.get_data() 
         self.label1 = Label(self.top3, bg="pink", fg="black", text="Welcome", font="Helvetica 13 bold", pady=10, width=20, height=1)
         self.label1.grid(row=0)
 
@@ -527,7 +565,10 @@ class Chat:
         self.send_button.grid(row=2, column=1)
 
     def send(self):
-        message = "You -> " + self.e.get()
+        message = self.e.get()
+        print(message)
+        message_to_server = {'key': 'ADDMSG', 'owner_id': self.id, 'message': message}
+        self.client.transfer_data(message_to_server)        
         self.txt.insert(END, "\n" + message)
         self.e.delete(0, END)
 
@@ -609,10 +650,12 @@ class Change_inf_prof(Profil):
             self.surname.get() != '' and self.surname.get() != 'Enter your surname':
             name = self.name.get() 
             surname = self.surname.get()
-            gender = self.choice.get() # male = 0  female = 1
+            gender = self.choice.get() # male = 1  female = 0
             info = self.info.get(1.0, END)
             self.top.withdraw()
-            Anketa(self.parent, self.client)
+            Anketa(self.parent, self.client, self.id)
+            message = {'key': 'UPDUSERINFO', 'user_id': self.id, 'surname': surname, 'name': name, 'is_male': gender, 'bio': info}
+            self.client.transfer_data(message)
             print(name,surname,gender,info)
         else:
             self.lbl1.place(x=100, y=380, width=300, height=30)

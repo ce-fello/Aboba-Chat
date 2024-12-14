@@ -1,4 +1,5 @@
 import json
+import random
 import sqlite3
 from constants import *
 
@@ -199,7 +200,21 @@ def get_id_by_login(login: str):
 	return -1
 
 
-def get_bio_of_user(user_id):
+def get_chat_id_by_members(member_id_1, member_id_2) -> int:
+	db_connection = sqlite3.connect(DB)
+	cursor = db_connection.cursor()
+	try:
+		cursor.execute('''SELECT chat_id FROM Chats WHERE members_id LIKE ? AND members_id LISE ?''', 
+				 (member_id_1, member_id_2, ))
+		result = int(cursor.fetchone()[0])
+		db_connection.close()
+		return result
+	except Exception as error:
+		db_connection.close()
+		print('Failed to get bio of user!', error)
+	return 0
+
+def get_info_of_user(user_id):
 	"""
 	Function that gets bio of user by ID.
 
@@ -213,7 +228,7 @@ def get_bio_of_user(user_id):
 	try:
 		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
 				 (user_id, ))
-		result = cursor.fetchone()[3]
+		result = cursor.fetchone()
 		db_connection.close()
 		return result
 	except Exception as error:

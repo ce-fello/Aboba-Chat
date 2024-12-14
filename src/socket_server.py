@@ -82,7 +82,6 @@ class Server:
 		initialize_db()
 		print_users_table()
 		print_chats_table()
-		print(get_id_by_login('billyh'))
 		while True:
 			try:
 				connection, address = server.accept()
@@ -125,9 +124,13 @@ def process_data(server: Server, connection: socket, data: dict):
 		case 'UPDUSERINFO':
 			update_user_info(data['user_id'], data['surname'], data['name'], data['is_male'], data['bio'])
 		case 'GETBIO':
-			server.send_message(connection, get_bio_of_user(data['user_id']))
+			server.send_message(connection, get_info_of_user(data['user_id']))
 		case 'GETID':
 			server.send_message(connection, get_id_by_login(data['login']))
+		case 'GETLAST':
+			server.send_message(connection, get_last_id())
+		case 'GETCHTMB':
+			server.send_message(connection, get_chat_id_by_members(data['member_id_1'], data['member_id_2']))
 
 
 def client_thread(server: Server, connection: socket):
