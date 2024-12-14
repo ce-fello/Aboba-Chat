@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>db_api</title>
+    <meta name="generator" content="pydoctor 24.11.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          Aboba-Chat <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code class="thisobject"><a href="index.html" class="internal-link" title="This module">db<wbr></wbr>_api</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#add_message_to_chat" class="internal-link" title="db_api.add_message_to_chat">add<wbr></wbr>_message<wbr></wbr>_to<wbr></wbr>_chat</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#create_chat" class="internal-link" title="db_api.create_chat">create<wbr></wbr>_chat</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#delete_chats_table" class="internal-link" title="db_api.delete_chats_table">delete<wbr></wbr>_chats<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#delete_sessions_table" class="internal-link" title="db_api.delete_sessions_table">delete<wbr></wbr>_sessions<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#delete_users_table" class="internal-link" title="db_api.delete_users_table">delete<wbr></wbr>_users<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_bio_of_user" class="internal-link" title="db_api.get_bio_of_user">get<wbr></wbr>_bio<wbr></wbr>_of<wbr></wbr>_user</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_chats" class="internal-link" title="db_api.get_chats">get<wbr></wbr>_chats</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_last_chat_id" class="internal-link" title="db_api.get_last_chat_id">get<wbr></wbr>_last<wbr></wbr>_chat<wbr></wbr>_id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_last_id" class="internal-link" title="db_api.get_last_id">get<wbr></wbr>_last<wbr></wbr>_id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#initialize_db" class="internal-link" title="db_api.initialize_db">initialize<wbr></wbr>_db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#print_chats_table" class="internal-link" title="db_api.print_chats_table">print<wbr></wbr>_chats<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#print_sessions_table" class="internal-link" title="db_api.print_sessions_table">print<wbr></wbr>_sessions<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#print_users_table" class="internal-link" title="db_api.print_users_table">print<wbr></wbr>_users<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#register_user" class="internal-link" title="db_api.register_user">register<wbr></wbr>_user</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#sign_user" class="internal-link" title="db_api.sign_user">sign<wbr></wbr>_user</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#update_user_info" class="internal-link" title="db_api.update_user_info">update<wbr></wbr>_user<wbr></wbr>_info</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="module"><code><code><a href="index.html" class="internal-link">db_api</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          module documentation
+        </div>
+
+        <div class="extrasDocstring">
+          
+          <p></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p class="undocumented">Undocumented</p></div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id1">
+  
+  
+  <tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#add_message_to_chat" class="internal-link" title="db_api.add_message_to_chat">add<wbr></wbr>_message<wbr></wbr>_to<wbr></wbr>_chat</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#create_chat" class="internal-link" title="db_api.create_chat">create<wbr></wbr>_chat</a></code></td>
+    <td>Function that creates chat and writes down IDs of its members.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#delete_chats_table" class="internal-link" title="db_api.delete_chats_table">delete<wbr></wbr>_chats<wbr></wbr>_table</a></code></td>
+    <td>Function that deletes table Chats.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#delete_sessions_table" class="internal-link" title="db_api.delete_sessions_table">delete<wbr></wbr>_sessions<wbr></wbr>_table</a></code></td>
+    <td>Function that deletes table Sessions.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#delete_users_table" class="internal-link" title="db_api.delete_users_table">delete<wbr></wbr>_users<wbr></wbr>_table</a></code></td>
+    <td>Function that deletes table Users.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_bio_of_user" class="internal-link" title="db_api.get_bio_of_user">get<wbr></wbr>_bio<wbr></wbr>_of<wbr></wbr>_user</a></code></td>
+    <td>Function that gets bio of user by ID.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_chats" class="internal-link" title="db_api.get_chats">get<wbr></wbr>_chats</a></code></td>
+    <td>Function that gets list of IDs of whose member is user.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_last_chat_id" class="internal-link" title="db_api.get_last_chat_id">get<wbr></wbr>_last<wbr></wbr>_chat<wbr></wbr>_id</a></code></td>
+    <td>Function to get the biggest ID in table Chats.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_last_id" class="internal-link" title="db_api.get_last_id">get<wbr></wbr>_last<wbr></wbr>_id</a></code></td>
+    <td>Function to get the biggest ID in table Users.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#initialize_db" class="internal-link" title="db_api.initialize_db">initialize<wbr></wbr>_db</a></code></td>
+    <td>Function that creates tables Users, Chats and Sessions.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#print_chats_table" class="internal-link" title="db_api.print_chats_table">print<wbr></wbr>_chats<wbr></wbr>_table</a></code></td>
+    <td>Function that prints table Chats content.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#print_sessions_table" class="internal-link" title="db_api.print_sessions_table">print<wbr></wbr>_sessions<wbr></wbr>_table</a></code></td>
+    <td>Function that prints table Sessions content.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#print_users_table" class="internal-link" title="db_api.print_users_table">print<wbr></wbr>_users<wbr></wbr>_table</a></code></td>
+    <td>Function that prints table Users content.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#register_user" class="internal-link" title="db_api.register_user">register<wbr></wbr>_user</a></code></td>
+    <td>Function that registers user and writes down his login and password in db.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#sign_user" class="internal-link" title="db_api.sign_user">sign<wbr></wbr>_user</a></code></td>
+    <td>Function that authentiticate user with login and password.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#update_user_info" class="internal-link" title="db_api.update_user_info">update<wbr></wbr>_user<wbr></wbr>_info</a></code></td>
+    <td>Function that updates user`s information by given parameters.</td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basefunction">
+  
+  
+  <a name="db_api.add_message_to_chat">
+    
+  </a>
+  <a name="add_message_to_chat">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">add_message_to_chat</span><span class="function-signature">(chat_id: <code>int</code>, owner: <code>int</code>, message: <code>str</code>)</span>:
+    
+    <a class="headerLink" href="#add_message_to_chat" title="db_api.add_message_to_chat">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.create_chat">
+    
+  </a>
+  <a name="create_chat">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">create_chat</span><span class="function-signature">(members_ids: <code>str</code>) -&gt; <code>bool</code></span>:
+    
+    <a class="headerLink" href="#create_chat" title="db_api.create_chat">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that creates chat and writes down IDs of its members.</p>
+<p>:param members_ids: IDs of users who are members of chat. :type: str :returns: True if managed to create and False if didn`t. :rtype: bool</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.delete_chats_table">
+    
+  </a>
+  <a name="delete_chats_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">delete_chats_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#delete_chats_table" title="db_api.delete_chats_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that deletes table Chats.</p>
+<p>:returns: deletes table. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.delete_sessions_table">
+    
+  </a>
+  <a name="delete_sessions_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">delete_sessions_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#delete_sessions_table" title="db_api.delete_sessions_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that deletes table Sessions.</p>
+<p>:returns: deletes table. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.delete_users_table">
+    
+  </a>
+  <a name="delete_users_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">delete_users_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#delete_users_table" title="db_api.delete_users_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that deletes table Users.</p>
+<p>:returns: deletes table. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.get_bio_of_user">
+    
+  </a>
+  <a name="get_bio_of_user">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_bio_of_user</span><span class="function-signature">(user_id)</span>:
+    
+    <a class="headerLink" href="#get_bio_of_user" title="db_api.get_bio_of_user">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that gets bio of user by ID.</p>
+<p>:param user_id: ID of user whose bio we are getting. :type: int :returns: string of user`s bio. :rtype: str</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.get_chats">
+    
+  </a>
+  <a name="get_chats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_chats</span><span class="function-signature">(user_id) -&gt; <code>list[<wbr></wbr>int]</code></span>:
+    
+    <a class="headerLink" href="#get_chats" title="db_api.get_chats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that gets list of IDs of whose member is user.</p>
+<p>:param user_id: ID of user. :type: int :returns: list of IDs. :rtype: list[int]</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.get_last_chat_id">
+    
+  </a>
+  <a name="get_last_chat_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_last_chat_id</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#get_last_chat_id" title="db_api.get_last_chat_id">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function to get the biggest ID in table Chats.</p>
+<p>:returns: the biggest found index or zero if table doesn`t exists or an error has occured. :rtype: int</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.get_last_id">
+    
+  </a>
+  <a name="get_last_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_last_id</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#get_last_id" title="db_api.get_last_id">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function to get the biggest ID in table Users.</p>
+<p>:returns: the biggest found index or zero if table doesn`t exists or an error has occured. :rtype: int</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.initialize_db">
+    
+  </a>
+  <a name="initialize_db">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">initialize_db</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#initialize_db" title="db_api.initialize_db">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that creates tables Users, Chats and Sessions.</p>
+<p>:returns: creates tables. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.print_chats_table">
+    
+  </a>
+  <a name="print_chats_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">print_chats_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#print_chats_table" title="db_api.print_chats_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that prints table Chats content.</p>
+<p>:returns: prints table content. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.print_sessions_table">
+    
+  </a>
+  <a name="print_sessions_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">print_sessions_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#print_sessions_table" title="db_api.print_sessions_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that prints table Sessions content.</p>
+<p>:returns: prints table content. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.print_users_table">
+    
+  </a>
+  <a name="print_users_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">print_users_table</span><span class="function-signature">()</span>:
+    
+    <a class="headerLink" href="#print_users_table" title="db_api.print_users_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that prints table Users content.</p>
+<p>:returns: prints table content. :rtype: void</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.register_user">
+    
+  </a>
+  <a name="register_user">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">register_user</span><span class="function-signature">(username, password) -&gt; <code>bool</code></span>:
+    
+    <a class="headerLink" href="#register_user" title="db_api.register_user">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that registers user and writes down his login and password in db.</p>
+<p>:param username: username/login of user. :type: str :param password: password of user. :type: str :returns: True if registered succesfully and False otherwise. :rtype: bool</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.sign_user">
+    
+  </a>
+  <a name="sign_user">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">sign_user</span><span class="function-signature">(login, password) -&gt; <code>bool</code></span>:
+    
+    <a class="headerLink" href="#sign_user" title="db_api.sign_user">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that authentiticate user with login and password.</p>
+<p>:param login: login of user. :type: str :param password: password of user. :type: str :returns: True if authentiticated succesfully and False otherwise. :rtype: bool</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="db_api.update_user_info">
+    
+  </a>
+  <a name="update_user_info">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">update_user_info</span><span class="function-signature">(user_id, surname, name, is_male, bio)</span>:
+    
+    <a class="headerLink" href="#update_user_info" title="db_api.update_user_info">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Function that updates user`s information by given parameters.</p>
+<p>:param user_id: id of user whose info we change. :type: int :param surname: surname of the user. :type: str :param surname: name of user. :type: str :param is_male: represents sex of user. :type: bool :bio: information about user. :type: str :returns: updates info in table Users :rtype: void</p>
+</div>
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for Aboba-Chat,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    24.11.1 at 2024-12-14 05:36:50.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>
