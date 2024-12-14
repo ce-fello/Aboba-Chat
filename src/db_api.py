@@ -201,6 +201,16 @@ def get_id_by_login(login: str):
 
 
 def get_chat_id_by_members(member_id_1: str, member_id_2: str) -> int:
+	"""
+	Function that gets ID of chat whose members` ids are given params.
+
+	:param member_id_1: id of first member of chat.
+	:type member_id_1: str
+	:param member_id_2: id of first member of chat.
+	:type member_id_2: str
+	:returns: ID of chat.
+	:rtype: int
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -242,15 +252,15 @@ def update_user_info(user_id, surname, name, is_male, bio):
 	Function that updates user`s information by given parameters.
 
 	:param user_id: id of user whose info we change.
-	:type: int
+	:type user_id: int
 	:param surname: surname of the user.
-	:type: str
-	:param surname: name of user.
-	:type: str
+	:type surname: str
+	:param name: name of user.
+	:type name: str
 	:param is_male: represents sex of user.
-	:type: bool
-	:bio: information about user.
-	:type: str
+	:type is_male: bool
+	:param bio: information about user.
+	:type bio: str
 	:returns: updates info in table Users
 	:rtype: void
 	"""
@@ -271,7 +281,7 @@ def create_chat(members_ids: str) -> bool:
 	Function that creates chat and writes down IDs of its members.
 
 	:param members_ids: IDs of users who are members of chat.
-	:type: str
+	:type members_ids: str
 	:returns: True if managed to create and False if didn`t.
 	:rtype: bool
 	"""
@@ -296,7 +306,16 @@ def create_chat(members_ids: str) -> bool:
 
 def add_message_to_chat(chat_id: int, owner: int, message: str):
 	"""
-	
+	Function that adds message to chat in table Chats.
+
+	:param chat_id: ID of chat.
+	:type chat_id: int
+	:param owner: ID of owner of message.
+	:type owner: int
+	:param message: message that we write.
+	:type message: str
+	:returns: Adds message in a field messages of Table Chats.
+	:rtype: void
 	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
@@ -320,7 +339,7 @@ def get_chats(user_id) -> list[int]:
 	Function that gets list of IDs of whose member is user.
 
 	:param user_id: ID of user.
-	:type: int
+	:type user_id: int
 	:returns: list of IDs.
 	:rtype: list[int]
 	"""
@@ -345,9 +364,9 @@ def sign_user(login, password) -> bool:
 	Function that authentiticate user with login and password.
 
 	:param login: login of user.
-	:type: str
+	:type login: str
 	:param password: password of user.
-	:type: str
+	:type password: str
 	:returns: True if authentiticated succesfully and False otherwise.
 	:rtype: bool
 	"""
@@ -374,9 +393,9 @@ def register_user(username, password) -> bool:
 	Function that registers user and writes down his login and password in db.
 
 	:param username: username/login of user.
-	:type: str
+	:type username: str
 	:param password: password of user.
-	:type: str
+	:type password: str
 	:returns: True if registered succesfully and False otherwise.
 	:rtype: bool
 	"""

@@ -12,17 +12,17 @@ class Server:
 		Constructor of class Server.
 
 		:param hostname: name or ip address of host.
-		:type: str
+		:type hostname: str
 		:param port: number of port on which server is run.
-		:type: int
+		:type port: int
 		"""
 		self.__hostname = hostname
 		self.__port = port
 		"""
 		:param __hostname: name or ip address of host.
-		:type: str
+		:type __hostname: str
 		:param __port: number of port on which server is run.
-		:type: int
+		:type __port: int
 		"""
 
 	def send_response(self, connection: socket, is_ok: bool):
@@ -71,7 +71,7 @@ class Server:
 		Runs server main cycle and setup everything.
 
 		:param number_of_connections: number of connections given to server to listen to.
-		:type: int
+		:type number_of_connections: int
 		:returns: runs server and its main cycle in which all requests are processed.
 		:rtype: void
 		:raises OSError: [Errno 98] Adress already in use.
@@ -100,11 +100,11 @@ def process_data(server: Server, connection: socket, data: dict):
 	Process recieved data from client. Watches on 'key' value of data and process relying on its value.
 
 	:param server: server that has to process recieved data.
-	:type: Server
+	:type server: Server
 	:param connection: socket to whom we send response.
-	:type: socket
+	:type connection: socket
 	:param data: data that we have recieved from client.
-	:type: dict
+	:type data: dict
 	:returns: process recieved data.
 	:rtype: void
 	"""
@@ -138,9 +138,9 @@ def client_thread(server: Server, connection: socket):
 	Function that describes a processing of a single client after it has connected to server
 
 	:param server: server we connect to.
-	:type: Server
+	:type server: Server
 	:param connection: socket we connect from.
-	:type: socket
+	:type connection: socket
 	:returns: runs a cycle to process data from client.
 	:rtype: void
 	"""
