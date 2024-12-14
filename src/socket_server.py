@@ -1,8 +1,8 @@
-import socket
 import json
+import socket
+from db_api import *
 from _thread import *
 from constants import *
-from db_api import *
 
 
 class Server:
@@ -47,7 +47,17 @@ class Server:
 		except Exception as error:
 			print('Failed to send ok response to client', connection, error)
 
-	def send_message(self, connection, message):
+	def send_message(self, connection, message: str):
+		"""
+		Function that sends message to socket.
+
+		:param connection: socket to which we send message.
+		:type connection: socket
+		:param message: message that we send to socket.
+		:type message: str
+		:returns: sends data to socket.
+		:rtype: void
+		"""
 		data = json.dumps(message).encode()
 		print(data)
 		try:

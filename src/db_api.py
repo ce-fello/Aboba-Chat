@@ -1,5 +1,5 @@
-import sqlite3
 import json
+import sqlite3
 from constants import *
 
 
@@ -176,29 +176,15 @@ def print_users_table():
 		print('Failed to print table!', error)
 
 
-# def get_form_of_user(user_id) -> list[int]:
-# 	"""
-# 	Function that gets list of IDs of chats that user is member of by ID.
-
-# 	:param user_id: ID of user whose chats we are getting.
-# 	:type: int
-# 	:returns: list of IDs.
-# 	:rtype: list[int]
-# 	"""
-# 	db_connection = sqlite3.connect(DB)
-# 	cursor = db_connection.cursor()
-# 	try:
-# 		cursor.execute('''SELECT * FROM Users WHERE user_id == ?''', 
-# 				 (user_id, ))
-# 		result = cursor.fetchone()[4]
-# 		db_connection.close()
-# 		return result
-# 	except Exception as error:
-# 		db_connection.close()
-# 		print('Failed to get form of user!', error)
-
-
 def get_id_by_login(login: str):
+	"""
+	Function that gets ID of user by his username(login).
+
+	:param login: username of person.
+	:type login: str
+	:returns: ID of user.
+	:rtype: int
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -218,7 +204,7 @@ def get_bio_of_user(user_id):
 	Function that gets bio of user by ID.
 
 	:param user_id: ID of user whose bio we are getting.
-	:type: int
+	:type user_id: int
 	:returns: string of user`s bio.
 	:rtype: str
 	"""
@@ -293,6 +279,9 @@ def create_chat(members_ids: str) -> bool:
 
 
 def add_message_to_chat(chat_id: int, owner: int, message: str):
+	"""
+	
+	"""
 	db_connection = sqlite3.connect(DB)
 	cursor = db_connection.cursor()
 	try:
@@ -431,36 +420,3 @@ def initialize_db():
 	)
 	''')
 	db_connection.close()
-
-# user_id_1, user_id_2 
-# -> json.dumps()
-# chat_members 
-#
-# [{	
-# 	'message_id': 'message_id',
-# 	'owner': 'user_id',
-# 	'message': 'text'
-# }, 
-# {
-# 	'message_id': 'message_id',
-# 	'owner': 'user_id',
-# 	'message': 'text'
-# },
-# ...
-# ] -> json.dumps()
-# chat_messages
-	# {
-	# 	'messages' : {
-	# 		'message_id': {
-	# 			'owner': 'user_id',
-	# 			'message': 'text'
-	# 		}
-	# 	},
-	# 	{ 'message_id': {
-	# 		'owner': 'user_id',
-	# 		'message': 'text'
-	# 	},
-	#	...
-	# }
-	# 
-	

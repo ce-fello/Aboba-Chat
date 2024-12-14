@@ -8,6 +8,7 @@ class AbobaChatApp:
     def __init__(self, root, client: Client):
         self.root = root
         self.client = client
+        self.id = -1
         self.root.title("Aboba chat)")
         self.root.geometry("500x500")
         self.root.resizable(width=False, height=False)
@@ -97,6 +98,9 @@ class AbobaChatApp:
             message = {'key': 'LOGUSER', 'login': login, 'password': password}
             self.client.transfer_data(message)
             if self.client.get_response():
+                self.client.transfer_data({'key': 'GETID', 'login': login})
+                self.id = self.client.get_data()
+                print(self.id)
                 root.withdraw() 
                 Anketa(self.root, self.client)
         else:
